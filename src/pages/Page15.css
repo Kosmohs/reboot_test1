@@ -1,0 +1,342 @@
+/* src/pages/Page15.css */
+
+/* Общие стили для страницы */
+.page-15-p15 {
+  background: rgba(13, 13, 13, 0.8);
+  width: 1280px;
+  height: 720px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Frame 38 - верхний блок с логотипом */
+.frame-38-p15 {
+  width: 1280px;
+  height: 41.65px;
+  display: flex;
+  flex-direction: column;
+  padding-top: 16px;
+  gap: 8px;
+}
+
+/* Логотип */
+.logo-p15 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Frame 65 - центральный блок */
+/* Frame 65 - центральный блок */
+.frame-65-p15 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 24px;
+  width: 1280px;
+  height: 550.35px; /* Фиксированная высота из Figma */
+  box-sizing: border-box;
+  /* flex: 1 убираем, так как задаем фиксированную высоту */
+  /* overflow-y: auto убираем, скролл не нужен */
+}
+
+/* Контейнер для Frame 63, 64, 65, 66 */
+/* Каждый блок упражнения */
+.frame-63-inner-p15 {
+  position: relative;
+  width: 603px;
+  height: 243.17px;
+}
+
+/* Внутренний контейнер, объединяющий картинку, Frame 68 и Frame 74 */
+.frame-63-inner-p15 {
+  position: relative;
+  width: 603px;
+  height: 243.17px;
+}
+
+/* Картинка (Frame 63) */
+.frame-63-image-p15 {
+  width: 100%;
+  height: 100%;
+  border-radius: 24px;
+  object-fit: cover; /* Чтобы картинка правильно заполняла область */
+}
+
+/* Frame 68 - блок с 2A | 2B */
+.frame-68-p15 {
+  position: absolute;
+  top: 0.35px;
+  left: 461px;
+  
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  
+  width: 142px;
+  height: 44px;
+  padding: 8px 24px;
+  
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+  border-top-width: 0px;
+  border-top-right-radius: 24px;
+  border-bottom-left-radius: 24px;
+  border-color: rgba(255, 255, 255, 0.2);
+  border-style: solid;
+  
+  background: rgba(13, 13, 13, 0.8);
+  box-sizing: border-box;
+}
+
+/* Текст 2A и 2B (общие стили) */
+.text-2a-p15,
+.text-2b-p15 {
+  width: 31px;
+  height: 28px;
+  
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 125%;
+  letter-spacing: 0.5px;
+  color: #FFFFFF;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Вертикальная линия (Line 1) */
+.line-1-p15 {
+  width: 0px; /* Изменяем с 27.02px на 0px */
+  height: 27.02px; /* Изменяем с 0px на 27.02px */
+  border-left: 1px solid rgba(255, 255, 255, 0.4); /* White/40 из скрина */
+  /* transform: rotate(90deg); УБИРАЕМ - теперь не нужно */
+}
+
+/* Frame 74 - блок с двумя клиентами */
+.frame-74-p15 {
+  position: absolute;
+  top: 195.35px;
+  left: 39.5px;
+  
+  width: 524px;
+  height: 48px;
+  
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Frame 68-client - контейнер для каждого клиента */
+.frame-68-client-p15 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  
+  width: 170px;
+  height: 48px;
+  padding: 8px 24px;
+  
+  border-top-width: 1px;
+  border-right-width: 1px;
+  border-left-width: 1px;
+  border-bottom-width: 0px;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  border-color: rgba(255, 255, 255, 0.2);
+  border-style: solid;
+  
+  background: rgba(13, 13, 13, 0.8);
+  box-sizing: border-box;
+}
+
+/* Frame 60 - внутренний контейнер с аватаром и текстом */
+.frame-60-p15 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  width: auto;
+  height: auto;
+}
+
+/* Аватар клиента (Ellipse 2) */
+.client-avatar-p15 {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #F0F3F4;
+  /* Для имитации аватара - можно удалить когда будут реальные картинки */
+  background-image: radial-gradient(circle at 30% 30%, #ffffff 0%, #F0F3F4 100%);
+}
+
+/* Текст "Клиент 1" */
+.client-text-p15 {
+  width: 82px;
+  height: 26px;
+  
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 150%;
+  letter-spacing: 0.3px;
+  color: #FFFFFF;
+  
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Frame 1 - нижняя панель */
+.frame-1-p15 {
+  width: 1280px;
+  height: 112px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 24px;
+  box-sizing: border-box;
+  align-items: center;
+}
+
+/* Frame 29 - кнопка "Раунд 1/8" */
+.frame-29-p15 {
+  width: 240px;
+  height: 64px;
+  border-radius: 24px;
+  padding: 24px;
+  gap: 8px;
+  background: rgba(13, 13, 13, 0.8);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+/* Текст "Раунд 1/8" */
+.text-approach-1-p15 {
+  width: 101px;
+  height: 32px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 32px;
+  letter-spacing: 0px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Frame 2 - центральный блок с прогрессом */
+.frame-2-p15 {
+  width: 494px;
+  height: 64px;
+  border-radius: 24px;
+  padding: 24px;
+  gap: 8px;
+  background: rgba(13, 13, 13, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Frame 16 - цифры прогресса 1-8 */
+.frame-16-p15 {
+  width: 446px;
+  height: 26px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+/* Цифры шагов */
+.step-number-p15 {
+  width: 55.75px;
+  height: 32px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 150%;
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Активный шаг - зеленый */
+.active-p15 {
+  color: #31A961;
+}
+
+/* Текущие шаги - белые цифры */
+.current-p15 {
+  color: #FFFFFF;
+}
+
+/* Frame 18 - прогресс-бар */
+.frame-18-p15 {
+  width: 446px;
+  height: 6px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+/* Элементы прогресс-бара */
+.progress-step-p15 {
+  width: 48.75px;
+  height: 6px;
+  border-radius: 100px;
+}
+
+/* Активный прогресс-бар - зеленый */
+.progress-step-p15.active-p15 {
+  background: #31A961;
+}
+
+/* Неактивные прогресс-бары - серые */
+.progress-step-p15.inactive-p15 {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Frame 30 - блок с таймером */
+.frame-30-p15 {
+  width: 240px;
+  height: 64px;
+  border-radius: 24px;
+  padding: 8px;
+  gap: 8px;
+  background: #FF6600;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Иконка таймера */
+.timer-icon-p15 {
+  width: 24px;
+  height: 24px;
+}
+
+/* Текст таймера "2:00" */
+.text-timer-p15 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  color: #FFFFFF;
+}

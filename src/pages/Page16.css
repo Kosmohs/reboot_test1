@@ -1,0 +1,343 @@
+/* src/pages/Page16.css */
+
+/* Общие стили для страницы */
+.page-16-p16 {
+  background: rgba(13, 13, 13, 0.8);
+  width: 1280px;
+  height: 720px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Frame 38 - верхний блок с логотипом */
+.frame-38-p16 {
+  width: 1280px;
+  height: 41.65px;
+  display: flex;
+  flex-direction: column;
+  padding-top: 16px;
+  gap: 8px;
+}
+
+/* Логотип */
+.logo-p16 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Frame 65 - центральный блок */
+.frame-65-p16 {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  gap: 16px;
+  width: 1280px;
+  box-sizing: border-box;
+  height: 550.35px;
+}
+
+/* Frame 75 и 76 - строки с 4 блоками */
+.frame-75-p16 {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  width: 1232px;
+  height: 243.17px;
+  flex: 1;
+}
+
+/* Frame 36 (и 35, 34, 33) */
+.frame-36-p16 {
+  width: 296px;
+  height: 243.17px;
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  gap: 16px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Vector - фоновая картинка - УВЕЛИЧИВАЕМ Z-INDEX И УМЕНЬШАЕМ */
+.frame-36-vector-p16 {
+  position: absolute;
+  /* width: 523.88px;
+  height: 815.28px; */
+  /* opacity: 0.02; */
+  pointer-events: none;
+  z-index: 0; 
+  bottom: 0;
+  left: 0;
+}
+
+/* Frame 70 */
+.frame-70-p16 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  height: fit-content;
+  gap: 8px;
+  position: relative;
+  z-index: 2; /* Увеличиваем z-index */
+}
+
+/* Ellipse2 - аватар */
+.ellipse2-p16 {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #D9D9D9;
+  flex-shrink: 0;
+}
+
+/* Frame 77 */
+.frame-77-p16 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 196px;
+  height: 50px;
+  gap: 4px;
+}
+
+/* Текст "Клиент 1" */
+.client-name-p16 {
+  width: 82px;
+  height: 26px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 150%;
+  letter-spacing: 0.3px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+/* Текст "Переход на след станцию" */
+.transition-text-p16 {
+  width: 196px;
+  height: 20px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 140%;
+  letter-spacing: 0.3px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+/* Frame 45 */
+.frame-45-p16 {
+  display: flex;
+  flex-direction: row;
+  width: 26px;
+  height: 20px;
+  gap: 4px;
+  position: relative;
+  z-index: 2; /* Увеличиваем z-index */
+}
+
+/* Vector внутри Frame 45 */
+.frame-45-vector-p16 {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Text 1A */
+.text-1a-p16 {
+  width: 47px;
+  height: 50px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 125%;
+  letter-spacing: 0.3px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2; /* Увеличиваем z-index */
+  /* margin-top: auto; */
+}
+
+/* Frame 1 - нижняя панель */
+.frame-1-p16 {
+  width: 1280px;
+  height: 112px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 24px;
+  box-sizing: border-box;
+  align-items: center;
+}
+
+/* Frame 29 - кнопка "Раунд 1/8" */
+.frame-29-p16 {
+  width: 240px;
+  height: 64px;
+  border-radius: 24px;
+  padding: 24px;
+  gap: 8px;
+  background: rgba(13, 13, 13, 0.8);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+/* Текст "Раунд 1/8" */
+/* .text-approach-1-p16 {
+  width: 101px;
+  height: 32px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 32px;
+  letter-spacing: 0px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+} */
+
+.text-transition-p16 {
+  width: 115px;
+  height: 30px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 125%;
+  letter-spacing: 0.3px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Frame 2 - центральный блок с прогрессом */
+.frame-2-p16 {
+  width: 494px;
+  height: 64px;
+  border-radius: 24px;
+  padding: 24px;
+  gap: 8px;
+  background: rgba(13, 13, 13, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Frame 16 - цифры прогресса 1-8 */
+.frame-16-p16 {
+  width: 446px;
+  height: 26px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+/* Цифры шагов */
+.step-number-p16 {
+  width: 55.75px;
+  height: 32px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 150%;
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Активный шаг - зеленый */
+.active-p16 {
+  color: #31A961;
+}
+
+/* Текущие шаги - белые цифры */
+.current-p16 {
+  color: #FFFFFF;
+}
+
+/* Frame 18 - прогресс-бар */
+.frame-18-p16 {
+  width: 446px;
+  height: 6px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+/* Элементы прогресс-бара */
+.progress-step-p16 {
+  width: 48.75px;
+  height: 6px;
+  border-radius: 100px;
+}
+
+/* Активный прогресс-бар - зеленый */
+.progress-step-p16.active-p16 {
+  background: #31A961;
+}
+
+/* Неактивные прогресс-бары - серые */
+.progress-step-p16.inactive-p16 {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Белый прогресс-бар (для 3-го) */
+.progress-step-p16.progress-current-p16 {
+  background: #FFFFFF;
+}
+
+/* Frame 30 - блок с таймером */
+.frame-30-p16 {
+  width: 240px;
+  height: 64px;
+  border-radius: 24px;
+  padding: 8px;
+  gap: 8px;
+  background: #FF6600;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Иконка таймера */
+.timer-icon-p16 {
+  width: 24px;
+  height: 24px;
+}
+
+/* Текст таймера "2:00" */
+.text-timer-p16 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  color: #FFFFFF;
+}

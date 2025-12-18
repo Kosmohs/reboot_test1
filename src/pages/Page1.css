@@ -1,0 +1,392 @@
+/* src/pages/Page1.css */
+
+/* Общие стили для страницы */
+.page-1 {
+  background: rgba(13, 13, 13, 0.8); /* Black/80 */
+  width: 1280px;
+  height: 720px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Frame 38 - верхний блок с логотипом */
+.frame-38 {
+  width: 1280px; /* Fill (1,280px) */
+  height: 41.65px; /* Hug (41.65px) */
+  display: flex;
+  flex-direction: column;
+  padding-top: 16px;
+  gap: 8px;
+}
+
+/* Логотип внутри Frame 38 */
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Изображение логотипа */
+.logo-image {
+  width: 70.42px;
+  height: 25.65px;
+}
+
+/* Frame 37 - центральная область с контентом */
+.frame-37 {
+  width: 1280px; /* Fill (1,280px) */
+  height: 566.35px; /* Fill (566.35px) */
+  display: flex;
+  flex-direction: row;
+  padding: 24px;
+  gap: 16px;
+}
+
+/* Frame 28 - контейнер внутри Frame 37 */
+.frame-28 {
+  width: 1232px; /* Fill (1,232px) */
+  height: 488px; /* Hug (488px) */
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 0 0 54.35px 0;
+}
+
+/* Frame 27 - горизонтальный ряд с колонками */
+.frame-27 {
+  width: 1232px; /* Fill (1,232px) */
+  height: 488px; /* Hug (488px) */
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+}
+
+/* Общие стили для колонок (Frame 52, 53, 54) */
+.frame-52,
+.frame-53,
+.frame-54 {
+  width: 389.33px; /* Fill (389.33px) - распределяется на 3 колонки */
+  height: 488px; /* Hug (488px) */
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+
+/* Общие стили для Frame 14 */
+.frame-14 {
+  width: 100%; /* Fill (389.33px) */
+  height: 64px; /* Fixed (64px) */
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Конкретные цвета для каждой колонки */
+.frame-52 .frame-14 {
+  background: rgba(249, 230, 54, 0.15); /* #F9E63626 - Yellow/Smooth 15% */
+}
+
+.frame-53 .frame-14 {
+  background: rgba(49, 169, 97, 0.15); /* #31A96126 - Green/Base 15% */
+}
+
+.frame-54 .frame-14 {
+  background: rgba(52, 117, 244, 0.15); /* #3475F426 - Blue 15% */
+}
+
+/* Frame 54-inner - контейнер для текста внутри Frame 14 */
+.frame-54-inner {
+  width: 296px; /* Fixed (296px) */
+  height: 32px; /* Fixed (32px) */
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Текст заголовков колонок */
+.text-full-body-1,
+.text-full-body-2,
+.text-full-body-3 {
+  height: 32px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 32px;
+  letter-spacing: 0px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Конкретные ширины для каждой колонки */
+.text-full-body-1 {  /* Для Frame 52 (Full Body 1) */
+  width: 112px;
+}
+
+.text-full-body-2,  /* Для Frame 53 (Full Body 2) */
+.text-full-body-3 {  /* Для Frame 54 (Full Body 3) */
+  width: 116px;
+}
+
+/* Frame 55 - нижняя часть колонки (список упражнений) */
+.frame-55 {
+  width: 100%; /* Fill (389.33px) */
+  height: 408px; /* Hug (408px) */
+  display: flex;
+  flex-direction: row;
+}
+
+/* Frame 47 - контейнер внутри Frame 55 */
+.frame-47 {
+  width: 100%; /* Fill (389.33px) */
+  height: 408px; /* Hug (408px) */
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+/* Frame 38-inner и Frame 40 - вертикальные колонки внутри Frame 47 */
+.frame-38-inner,
+.frame-40 {
+  width: 186.67px; /* Fill (186.67px) */
+  height: 408px; /* Hug (408px) */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Общие стили для элементов списка */
+.frame-54-nested,
+.frame-52-nested,
+.frame-37-nested,
+.frame-55-nested {
+  width: 186.67px; /* Fill (186.67px) */
+  height: 102px; /* Fixed (102px) */
+  display: flex;
+  flex-direction: row;
+}
+
+/* Frame 46 - контейнер внутри элемента списка */
+.frame-46 {
+  width: 100%; /* Fill (186.67px) */
+  height: 100%; /* Fill (102px) */
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* White/10 */
+}
+
+/* Frame 58 - вертикальный контейнер внутри Frame 46 */
+.frame-58 {
+  width: 100%; /* Fill (186.67px) */
+  height: 102px; /* Hug (102px) */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Frame 10 - верхняя часть элемента (аватар и имя) */
+.frame-10 {
+  width: 100%; /* Fill (186.67px) */
+  height: 64px; /* Fixed (64px) */
+  display: flex;
+  flex-direction: row;
+  padding: 24px 24px 0 24px;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Placeholder для изображения */
+.image-placeholder {
+  width: 32px;
+  height: 32px;
+  background: #F0F3F4; /* Цвет изображения */
+  border-radius: 50%;
+}
+
+/* Текст "Марина" */
+.text-marina {
+  width: 98.67px;
+  height: 20px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 140%;
+  letter-spacing: 0.3px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+}
+
+/* Frame 26 - нижняя часть элемента (только 2D на странице 1) */
+.frame-26 {
+  width: 100%; /* Fill (186.67px) */
+  height: 38px; /* Hug (38px) */
+  display: flex;
+  flex-direction: row;
+  padding: 8px;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Текст "2D" */
+.text-2d {
+  width: 23px;
+  height: 22px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 140%;
+  letter-spacing: 0.3px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Frame 1 - нижняя панель (прогресс, таймер и т.д.) */
+.frame-1 {
+  width: 1280px; /* Fill (1,280px) */
+  height: 112px; /* Hug (112px) */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 24px;
+  box-sizing: border-box;
+  align-items: center;
+}
+
+/* Frame 29 - кнопка "Подход 1" */
+.frame-29 {
+  width: 240px; /* Fixed (240px) */
+  height: 64px; /* Fixed (64px) */
+  border-radius: 24px;
+  padding: 24px; /* Исправлено: было padding: 17px 61.5px */
+  gap: 8px;
+  background: rgba(13, 13, 13, 0.8); /* Black/80 */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Текст "Подход 1" */
+.text-approach-1 {
+  width: 117px;
+  height: 30px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 125%;
+  letter-spacing: 0.3px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Frame 2 - центральный блок с прогрессом */
+.frame-2 {
+  width: 494px; /* Fixed (494px) */
+  height: 64px; /* Fixed (64px) */
+  border-radius: 24px;
+  padding: 24px;
+  gap: 8px;
+  background: rgba(13, 13, 13, 0.8); /* Black/80 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Frame 16 - цифры прогресса 1-8 */
+.frame-16 {
+  width: 446px; /* Fill (446px) */
+  height: 26px; /* Hug (26px) */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+/* Цифры шагов */
+.step-number {
+  width: 55.75px; /* 446px / 8 = 55.75px */
+  height: 26px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 150%;
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #FFFFFF; /* Белый по умолчанию */
+}
+
+/* Активные шаги (только 1 на странице 1) */
+.step-number.active {
+  color: #31A961; /* Green/Base */
+}
+
+/* Frame 18 - прогресс-бар */
+.frame-18 {
+  width: 446px; /* Fill (446px) */
+  height: 6px; /* Hug (6px) */
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+/* Элементы прогресс-бара */
+.progress-step {
+  width: 48.75px; /* (446px - 7*8px) / 8 = (446-56)/8 = 48.75px */
+  height: 6px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.2); /* Белый с прозрачностью по умолчанию */
+}
+
+/* Активные шаги прогресса (только 1 на странице 1) */
+.progress-step.active {
+  background: #31A961; /* Green/Base */
+}
+
+/* Frame 30 - блок с таймером */
+.frame-30 {
+  width: 240px; /* Fixed (240px) */
+  height: 64px; /* Fixed (64px) */
+  border-radius: 24px;
+  padding: 8px;
+  gap: 8px;
+  background: #FF6600; /* Main/Base */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Иконка таймера */
+.timer-icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* Текст таймера "2:00" */
+.text-timer {
+  width: 54px;
+  height: 30px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 125%;
+  letter-spacing: 0.3px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

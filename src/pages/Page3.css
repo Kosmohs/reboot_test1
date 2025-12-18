@@ -1,0 +1,251 @@
+/* src/pages/Page3.css */
+
+.page-3 {
+  background: linear-gradient(180deg, #FF6600 0%, #943E06 100%);
+  width: 1280px;
+  height: 720px;
+  padding: 24px;
+  /* gap: 8px; */
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  /* УБИРАЕМ: margin: 0 auto */
+}
+
+/* Основная цифра 30 */
+.main-number-p3 {
+  width: 255px;
+  height: 250px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 200px;
+  line-height: 125%;
+  letter-spacing: 0.3px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  position: relative;
+  margin-top: 95px; /* 95px между Frame 14 и цифрой 30 */
+  margin-bottom: 95px; /* 95px между цифрой 30 и Frame 15 */
+  align-self: center; /* Центрируем цифру по горизонтали */
+}
+
+/* Frame 14 - центральная плашка */
+.frame-14-p3 {
+  width: 1216px;
+  height: 144px;
+  background: #1C1C1C;
+  border-radius: 24px;
+  z-index: 2;
+  position: relative;
+  margin-top: 24px;
+  /* УБИРАЕМ: margin: 0 auto */
+}
+
+/* Frame 15 - нижняя панель */
+.frame-15-p3 {
+  width: 1280px;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  /* justify-content: space-between; */
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+  z-index: 2;
+  position: relative;
+  /* margin-top: auto; */
+}
+
+/* .vector-bg-p3 {
+  position: absolute;
+  width: 935.29px;
+  height: 1455.54px;
+  opacity: 2%;
+  transform: rotate(30deg);
+  filter: drop-shadow(0px 4px 129.3px #FF8E42);
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(30deg);
+  opacity: 20%;
+} */
+
+/* Vector - декоративный SVG фон */
+/* .vector-bg-p3 {
+  position: absolute;
+  width: 935.29px;
+  height: 1455.54px;
+  opacity: 2%;
+  filter: drop-shadow(0px 4px 129.3px #FF8E42);
+  z-index: 1;
+  
+
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+} */
+
+/* Vector - декоративный SVG фон (ВРЕМЕННО для отладки) */
+.vector-bg-p3 {
+  position: absolute;
+  /* width: 935.29px;
+  height: 1455.54px; */
+  width: 1300px; /* Увеличиваем ширину */
+  height: 1810px; /* Увеличиваем высоту */
+  opacity: 80%; 
+  filter: drop-shadow(0px 4px 129.3px #FF8E42);
+  z-index: 1;
+  
+  /* Центрируем */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+}
+
+
+
+/* Frame 1 - верхняя часть внутри Frame 14 */
+.frame-1-p3 {
+  width: 100%; /* Fill (1,216px) */
+  height: auto; /* Hug (72px) */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 20px 24px;
+}
+
+/* Frame 3 - нижняя часть внутри Frame 14 */
+.frame-3-p3 {
+  width: 100%; /* Fill (1,216px) */
+  height: auto; /* Hug (72px) */
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgba(255, 255, 255, 0.05); /* White/5 */
+  padding: 16px 24px;
+  gap: 8px;
+}
+
+/* Text "Раунд 1/8" */
+.text-round-p3 {
+  width: 101px;
+  height: 32px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 32px;
+  letter-spacing: 0px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+}
+
+/* Frame 13 */
+.frame-13-p3 {
+  width: auto; /* Hug (61px) */
+  height: auto; /* Hug (28px) */
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+/* Text "08:41" */
+.text-time-p3 {
+  width: 61px;
+  height: 28px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 125%;
+  letter-spacing: 0.5px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Frame 16 - цифры 1-4 */
+.frame-16-p3 {
+  width: 100%; /* Fill (1,168px) */
+  height: auto; /* Hug (26px) */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+/* Step numbers */
+.step-number-p3 {
+  width: 292px;
+  height: 26px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 150%;
+  letter-spacing: 0.3px;
+  color: #FFFFFF; /* Белый по умолчанию */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Активная цифра (1) - зеленая */
+.step-number-p3--active {
+  color: #31A961; /* Green/Base */
+}
+
+/* Frame 18 - прогресс-бар */
+.frame-18-p3 {
+  width: 100%; /* Fill (1,168px) */
+  height: auto; /* Hug (6px) */
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+/* Progress steps */
+.progress-step-p3 {
+  width: 286px;
+  height: 6px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.2); /* White/20 */
+}
+
+/* Активный прогресс-шаг (1) - зеленый */
+.progress-step-p3--active {
+  background: #31A961; /* Green/Base */
+}
+
+
+/* Frame 29 - кнопка "Подход 1" */
+.frame-29-p3 {
+  width: 240px;
+  height: 64px;
+  display: flex;
+  flex-direction: row;
+  border-radius: 24px;
+  padding: 8px;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.1); /* White/10 */
+  align-items: center;
+  justify-content: center;
+}
+
+/* Text "Подход 1" */
+.text-approach-p3 {
+  width: 117px;
+  height: 30px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 125%;
+  letter-spacing: 0.3px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

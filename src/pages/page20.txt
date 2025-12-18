@@ -1,0 +1,431 @@
+// src/pages/Page20.jsx
+import './Page20.css';
+import { useState } from 'react';
+import Logo from '../assets/images/logo.svg';
+import TimerIcon from '../assets/images/timer.svg';
+import ShuffleIcon from '../assets/images/lucide_shuffle.svg';
+// Импорты для картинок (нужно будет скачать)
+import Frame30Vector from '../assets/images/frame30-vector.svg';
+import Frame45Vector from '../assets/images/frame45-vector.svg';
+
+function Page20() {
+  const [currentRound, setCurrentRound] = useState(1);
+  const totalRounds = 8;
+
+  // Функция для рендеринга блока Frame 30 (и 31, 32, 33)
+  // В функции renderFrame30:
+    const renderFrame30 = (id, text = "1A", clientName = "Amtonio 1") => (
+    <div key={id} className="frame-30-body-p20"> {/* БЫЛО: frame-30-p20 */}
+        {/* Frame 70 */}
+        <div className="frame-70-p20">
+        {/* Frame 60 */}
+        <div className="frame-60-p20">
+            {/* Ellipse2 */}
+            <div className="ellipse2-p20"></div>
+            {/* Text Amtonio 1 */}
+            <div className="client-name-p20">{clientName}</div>
+        </div>
+        
+        {/* Text Переход на след станцию */}
+        <div className="transition-text-p20">Переход на след станцию</div>
+        </div>
+        
+        {/* Frame 45 */}
+        <div className="frame-45-p20">
+        <img 
+            src={Frame30Vector} 
+            alt="Стрелка" 
+            className="frame-45-vector-p20" 
+        />
+        </div>
+        
+        {/* Text 1A */}
+        <div className="text-1a-p20">{text}</div>
+    </div>
+    );
+
+  return (
+    <div className="page page-20-p20">
+      {/* Frame 38 - верхний блок с логотипом */}
+      <div className="frame-38-p20">
+        <div className="logo-p20">
+          <img src={Logo} alt="Логотип" className="logo-image-p20" />
+        </div>
+      </div>
+      
+      {/* Frame 65 - центральный блок */}
+      <div className="frame-65-p20">
+        {/* Frame 30 */}
+        {renderFrame30("frame30", "1A", "Amtonio 1")}
+        
+        {/* Frame 31 */}
+        {renderFrame30("frame31", "2B", "Amtonio 2")}
+        
+        {/* Frame 32 */}
+        {renderFrame30("frame32", "3C", "Amtonio 3")}
+        
+        {/* Frame 33 */}
+        {renderFrame30("frame33", "4D", "Amtonio 4")}
+      </div>
+
+      {/* Frame 1 - нижняя панель */}
+      <div className="frame-1-p20">
+        {/* Frame29 - с иконкой shuffle и текстом "Переход" */}
+        <div className="frame-29-p20">
+          <img src={ShuffleIcon} alt="Shuffle" className="shuffle-icon-p20" />
+          <div className="text-transition-p20">Переход</div>
+        </div>
+        
+        {/* Frame2 - по центру */}
+        <div className="frame-2-p20">
+          {/* Frame16 - верхняя часть с цифрами 1-8 */}
+          <div className="frame-16-p20">
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((number) => (
+              <div 
+                key={number} 
+                className={`step-number-p20 ${
+                  number <= 2 ? 'active-p20' : 
+                  number === 3 ? 'current-p20' :
+                  number === currentRound ? 'active-p20' : 'inactive-p20'
+                }`}
+              >
+                {number}
+              </div>
+            ))}
+          </div>
+          
+          {/* Frame18 - нижняя часть (прогресс бар) */}
+          <div className="frame-18-p20">
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((number) => (
+              <div 
+                key={number} 
+                className={`progress-step-p20 ${
+                  number <= 2 ? 'active-p20' : 
+                  number === 3 ? 'progress-current-p20' :
+                  number === currentRound ? 'active-p20' : 'inactive-p20'
+                }`}
+              ></div>
+            ))}
+          </div>
+        </div>
+        
+        {/* Frame30 - справа */}
+        <div className="frame-30-p20">
+          <img src={TimerIcon} alt="Timer" className="timer-icon-p20" />
+          <div className="text-timer-p20">2:00</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Page20;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* src/pages/Page20.css */
+
+/* Общие стили для страницы */
+.page-20-p20 {
+  background: rgba(13, 13, 13, 0.8);
+  width: 1280px;
+  height: 720px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Frame 38 - верхний блок с логотипом */
+.frame-38-p20 {
+  width: 1280px;
+  height: 41.65px;
+  display: flex;
+  flex-direction: column;
+  padding-top: 16px;
+  gap: 8px;
+}
+
+/* Логотип */
+.logo-p20 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Frame 65 - центральный блок */
+.frame-65-p20 {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  padding: 24px;
+  width: 1280px;
+  box-sizing: border-box;
+  height: 550.35px;
+}
+
+/* Frame 30-body (основной блок в Frame 65) */
+.frame-30-body-p20 {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  gap: 32px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  width: 296px;
+  height: 502.35px;
+  overflow: hidden;
+}
+
+/* Frame 70 */
+.frame-70-p20 {
+  display: flex;
+  flex-direction: column;
+  width: 223px;
+  height: 166px;
+  gap: 16px;
+}
+
+/* Frame 60 */
+.frame-60-p20 {
+  display: flex;
+  flex-direction: column;
+  width: 128px;
+  height: 126px;
+  gap: 16px;
+}
+
+/* Ellipse2 */
+.ellipse2-p20 {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #D9D9D9;
+}
+
+/* Text Amtonio 1 */
+.client-name-p20 {
+  width: 128px;
+  height: 30px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 125%;
+  letter-spacing: 0.3px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+}
+
+/* Text Переход на след станцию */
+.transition-text-p20 {
+  width: 223px;
+  height: 24px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: 0.3px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+/* Frame 45 */
+.frame-45-p20 {
+  display: flex;
+  flex-direction: row;
+  width: 58px;
+  height: 48px;
+  gap: 4px;
+  transform: rotate(-90deg);
+}
+
+/* Vector внутри Frame 45 */
+.frame-45-vector-p20 {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Text 1A */
+.text-1a-p20 {
+  width: 70px;
+  height: 75px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 60px;
+  line-height: 125%;
+  letter-spacing: 0.3px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Frame 1 - нижняя панель */
+.frame-1-p20 {
+  width: 1280px;
+  height: 112px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 24px;
+  box-sizing: border-box;
+  align-items: center;
+}
+
+/* Frame 29 - кнопка с иконкой shuffle */
+.frame-29-p20 {
+  width: 240px;
+  height: 64px;
+  border-radius: 24px;
+  padding: 24px;
+  gap: 8px;
+  background: rgba(13, 13, 13, 0.8);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.text-transition-p20 {
+  width: 115px;
+  height: 30px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 125%;
+  letter-spacing: 0.3px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Frame 2 - центральный блок с прогрессом */
+.frame-2-p20 {
+  width: 494px;
+  height: 64px;
+  border-radius: 24px;
+  padding: 24px;
+  gap: 8px;
+  background: rgba(13, 13, 13, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Frame 16 - цифры прогресса 1-8 */
+.frame-16-p20 {
+  width: 446px;
+  height: 26px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+/* Цифры шагов */
+.step-number-p20 {
+  width: 55.75px;
+  height: 32px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 150%;
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Активный шаг - зеленый */
+.active-p20 {
+  color: #31A961;
+}
+
+/* Текущие шаги - белые цифры */
+.current-p20 {
+  color: #FFFFFF;
+}
+
+/* Frame 18 - прогресс-бар */
+.frame-18-p20 {
+  width: 446px;
+  height: 6px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+/* Элементы прогресс-бара */
+.progress-step-p20 {
+  width: 48.75px;
+  height: 6px;
+  border-radius: 100px;
+}
+
+/* Активный прогресс-бар - зеленый */
+.progress-step-p20.active-p20 {
+  background: #31A961;
+}
+
+/* Неактивные прогресс-бары - серые */
+.progress-step-p20.inactive-p20 {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Белый прогресс-бар (для 3-го) */
+.progress-step-p20.progress-current-p20 {
+  background: #FFFFFF;
+}
+
+/* Frame 30 - блок с таймером */
+.frame-30-p20 {
+  width: 240px;
+  height: 64px;
+  border-radius: 24px;
+  padding: 8px;
+  gap: 8px;
+  background: #FF6600;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Иконка таймера */
+.timer-icon-p20 {
+  width: 24px;
+  height: 24px;
+}
+
+/* Текст таймера "2:00" */
+.text-timer-p20 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  color: #FFFFFF;
+}

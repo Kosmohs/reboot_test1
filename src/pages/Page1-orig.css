@@ -1,0 +1,442 @@
+/* src/pages/Page1.css */
+
+* {
+  box-sizing: border-box;
+}
+
+.page-1 {
+  background: rgba(13, 13, 13, 0.8);
+  width: 1280px;
+  height: 720px;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  /* margin: 0 auto; */
+}
+
+/* Frame38 - заголовок с лого */
+.frame-38 {
+  width: 100%;
+  height: auto;
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Логотип контейнер */
+.logo {
+  width: 70.42px; /* ← ТОЧНАЯ ШИРИНА из Figma */
+  height: 25.65px; /* ← ТОЧНАЯ ВЫСОТА из Figma */
+  padding-top: 1px;
+  padding-bottom: 1px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  /* margin-left: 604.79px; 
+  margin-right: 604.79px; */
+  margin: 0 auto;
+}
+
+/* Элемент логотипа */
+.logo-element {
+  width: 70.42px;
+  height: 23.65px;
+}
+
+
+.logo-image {
+  width: 70.42px;
+  height: 25.65px;
+}
+
+
+/* Frame37 - основное тело */
+.frame-37 {
+  width: 100%; /* Fill (1,280px) */
+  height: 566.35px; /* Fill (566.35px) */
+  padding: 24px;
+  display: flex;
+  flex-direction: row; /* Flow Horizontal */
+  gap: 16px;
+  background: rgba(255, 0, 0, 0.1); /* Временный фон для визуализации */
+}
+
+/* Добавляем в Page1.css */
+/* .frame-28 {
+  width: 100%; 
+  height: auto; 
+  display: flex;
+  flex-direction: column; 
+  gap: 24px;
+  background: rgba(0, 255, 0, 0.1);
+}
+
+
+.frame-27 {
+  width: 100%; 
+  height: auto; 
+  display: flex;
+  flex-direction: row; 
+  gap: 32px;
+  background: rgba(0, 0, 255, 0.1);
+} */
+
+.frame-28 {
+  width: 100%; /* 1232px */
+  height: auto; /* 488px */
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 54.35px 0;
+  background: rgba(0, 255, 0, 0.1);
+}
+
+/* ОБНОВЛЯЕМ Frame27 */
+.frame-27 {
+  width: 100%; /* Занимает всю ширину ВНУТРИ padding */
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+  background: rgba(0, 0, 255, 0.1);
+  justify-content: space-between;
+}
+
+/* Добавляем в Page1.css */
+.frame-52,
+.frame-53,
+.frame-54 {
+  width: 389.33px; /* Fill (389.33px) */
+  height: auto; /* Hug (488px) */
+  display: flex;
+  flex-direction: column; /* Flow Vertical */
+  gap: 16px;
+  background: rgba(255, 255, 0, 0.2); /* Временный фон */
+  /* flex: 1; */
+}
+
+/* Добавляем в Page1.css */
+.frame-14 {
+  width: 100%; /* Fill (389.33px) */
+  height: 64px; /* Fixed (64px) */
+  display: flex;
+  flex-direction: column; /* Flow Vertical */
+  border-radius: 24px;
+  /* background: rgba(249, 230, 54, 0.15);  */
+  padding: 16px 46.67px; /* ← ОТСТУПЫ ДОБАВЛЯЕМ СЮДА */
+}
+
+/* Frame14 в Frame52 - желтый */
+.frame-52 .frame-14 {
+  background: rgba(249, 230, 54, 0.15); /* #F9E636 15% */
+}
+
+/* Frame14 в Frame53 - зеленый */
+.frame-53 .frame-14 {
+  background: rgba(49, 169, 97, 0.15); /* #31A961 15% */
+}
+
+/* Frame14 в Frame54 - синий */
+.frame-54 .frame-14 {
+  background: rgba(52, 117, 244, 0.15); /* #3475F4 15% */
+}
+
+
+.frame-55 {
+  width: 100%; /* Fill (389.33px) */
+  height: auto; /* Hug (408px) */
+  display: flex;
+  flex-direction: row; /* Flow Horizontal */
+  background: rgba(128, 0, 128, 0.2); /* Временный фон */
+}
+
+.frame-54-inner {
+  width: 296px; /* Fixed (296px) */
+  height: 32px; /* Fixed (32px) */
+  display: flex;
+  flex-direction: row; /* Flow Horizontal */
+  gap: 8px;
+  align-items: center; /* ← ВЫРАВНИВАНИЕ ДОБАВЛЯЕМ СЮДА */
+  justify-content: center; /* ← ВЫРАВНИВАНИЕ ДОБАВЛЯЕМ СЮДА */
+}
+
+.text-full-body-1,
+.text-full-body-2,
+.text-full-body-3 {
+  width: 112px;
+  height: 32px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 32px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text-full-body-2,
+.text-full-body-3 {
+    width: 116px;
+}
+
+.frame-47 {
+  width: 100%; /* Fill (389.33px) */
+  height: auto; /* Hug (408px) */
+  display: flex;
+  flex-direction: row; /* Flow Horizontal */
+  gap: 16px;
+  background: rgba(255, 165, 0, 0.2); /* Временный оранжевый фон */
+}
+
+.frame-38-inner,
+.frame-40 {
+  width: 186.67px; /* Fill (186.67px) */
+  height: auto; /* Hug (408px) */
+  display: flex;
+  flex-direction: column; /* Flow Vertical */
+  background: rgba(0, 255, 255, 0.2); /* Временный голубой фон */
+}
+
+
+/* Добавляем в Page1.css */
+
+/* 4 элемента внутри Frame38-inner */
+.frame-54-nested,
+.frame-52-nested,
+.frame-37-nested,
+.frame-55-nested {
+  width: 100%; /* Fill (186.67px) */
+  height: 102px; /* Fixed (102px) */
+  display: flex;
+  flex-direction: row; /* Flow Horizontal */
+  background: rgba(255, 0, 255, 0.2); /* Временный розовый фон */
+}
+
+/* Frame46 */
+.frame-46 {
+  width: 100%; /* Fill (186.67px) */
+  height: 100%; /* Fill (102px) */
+  display: flex;
+  flex-direction: column; /* Flow Vertical */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* 1px #FFFFFF 10% */
+}
+
+/* Frame58 */
+.frame-58 {
+  width: 100%; /* Fill (186.67px) */
+  height: auto; /* Hug (102px) */
+  display: flex;
+  flex-direction: column; /* Flow Vertical */
+  background: rgba(0, 255, 0, 0.2); /* Временный зеленый фон */
+}
+
+
+/* Добавляем в Page1.css */
+
+/* Frame10 */
+.frame-10 {
+  width: 100%; /* Fill (186.67px) */
+  height: 64px; /* Fixed (64px) */
+  display: flex;
+  flex-direction: row; /* Flow Horizontal */
+  padding: 24px 24px 0px 24px; /* Top 24px, Right 24px, Left 24px */
+  gap: 8px;
+  align-items: center;
+}
+
+/* Image */
+.image-placeholder {
+  width: 32px;
+  height: 32px;
+  background: #F0F3F4; /* Цвет изображения */
+  border-radius: 50%; /* Предполагаю что это аватар */
+}
+
+/* Text Марина */
+.text-marina {
+  width: 98.67px;
+  height: 20px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 140%;
+  letter-spacing: 0.3px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+}
+
+/* Frame26 */
+.frame-26 {
+  width: 100%; /* Fill (186.67px) */
+  height: auto; /* Hug (38px) */
+  display: flex;
+  flex-direction: row; /* Flow Horizontal */
+  padding: 8px;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Text 2D */
+.text-2d {
+  width: 23px;
+  height: 22px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 140%;
+  letter-spacing: 0.3px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.frame-1 {
+  width: 100%; /* Fill (1,280px) */
+  height: auto; /* Hug (112px) */
+  display: flex;
+  flex-direction: row; /* Flow Horizontal */
+  justify-content: space-between; /* Justify space-between */
+  padding: 24px;
+  background: rgba(255, 0, 0, 0.1); /* Временный фон */
+  box-sizing: border-box;
+}
+
+
+/* Frame29 */
+.frame-29 {
+  width: 240px; /* Fixed (240px) */
+  height: 64px; /* Fixed (64px) */
+  display: flex;
+  flex-direction: row; /* Flow Horizontal */
+  border-radius: 24px;
+  padding: 24px;
+  gap: 8px;
+  background: rgba(13, 13, 13, 0.8); /* #0D0D0D 80% */
+  align-items: center;
+  padding: 17px 61.5px;
+}
+
+/* Frame2 */
+.frame-2 {
+  width: 494px; /* Fixed (494px) */
+  height: 64px; /* Fixed (64px) */
+  display: flex;
+  flex-direction: column; /* Flow Vertical */
+  border-radius: 24px;
+  padding: 24px;
+  gap: 8px;
+  background: rgba(13, 13, 13, 0.8); /* #0D0D0D 80% */
+  align-items: center;
+  justify-content: center;
+}
+
+/* Frame30 */
+.frame-30 {
+  width: 240px; /* Fixed (240px) */
+  height: 64px; /* Fixed (64px) */
+  display: flex;
+  flex-direction: row; /* Flow Horizontal */
+  border-radius: 24px;
+  padding: 8px;
+  gap: 8px;
+  background: #FF6600; /* Main/Base */
+  align-items: center;
+  justify-content: center;
+}
+
+/* Добавляем в Page1.css */
+.text-approach-1 {
+  width: 117px;
+  height: 30px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 125%;
+  letter-spacing: 0.3px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* Frame16 */
+.frame-16 {
+  width: 100%; /* Fill (446px) */
+  height: auto; /* Hug (26px) */
+  display: flex;
+  flex-direction: row; /* Flow Horizontal */
+  justify-content: space-between; /* Justify space-between */
+}
+
+
+/* Цифры шагов - по умолчанию белые */
+.step-number {
+  width: 55.75px;
+  height: 26px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 150%;
+  letter-spacing: 0.3px;
+  color: #FFFFFF; /* ← ПО УМОЛЧАНИЮ БЕЛЫЙ */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Активная цифра - зеленая */
+.step-number.active {
+  color: #31A961; /* ← ТОЛЬКО АКТИВНАЯ ЗЕЛЕНАЯ */
+}
+
+/* Frame18 */
+.frame-18 {
+  width: 100%; /* Fill (446px) */
+  height: auto; /* Hug (6px) */
+  display: flex;
+  flex-direction: row; /* Flow Horizontal */
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.1); /* Временный фон */
+}
+
+
+/* Прогресс-шаги - по умолчанию белые с прозрачностью */
+.progress-step {
+  width: 48.75px;
+  height: 6px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Активный прогресс-шаг - зеленый */
+.progress-step.active {
+  background: #31A961; /* Green/Base */
+}
+
+/* Иконка таймера SVG */
+.timer-icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* Текст времени */
+.text-timer {
+  width: 54px;
+  height: 30px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 125%;
+  letter-spacing: 0.3px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

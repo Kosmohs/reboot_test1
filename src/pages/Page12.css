@@ -1,0 +1,359 @@
+/* src/pages/Page12.css */
+
+/* Общие стили для страницы */
+.page-12-p12 {
+  background: rgba(13, 13, 13, 0.8);
+  width: 1280px;
+  height: 720px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Frame 38 - ВНЕШНИЙ верхний блок с логотипом */
+.frame-38-p12 {
+  width: 1280px;
+  height: 41.65px;
+  display: flex;
+  flex-direction: column;
+  padding-top: 16px;
+  gap: 8px;
+}
+
+/* Логотип */
+.logo-p12 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Frame 37 - центральная область с контентом */
+.frame-37-p12 {
+  width: 1280px;
+  height: 566.35px;
+  display: flex;
+  flex-direction: row;
+  padding: 24px;
+  gap: 16px;
+}
+
+/* Frame 28 - контейнер внутри Frame 37 */
+.frame-28-p12 {
+  width: 1232px;
+  height: 528px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 0 0 38.35px 0;
+}
+
+/* Frame 27 - горизонтальный ряд (только одна колонка) */
+.frame-27-p12 {
+  width: 1232px;
+  height: 528px;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+/* Frame 52 - единственная колонка */
+.frame-52-p12 {
+  width: 1232px;
+  height: 528px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Frame 14 - верхняя часть (заголовок) */
+.frame-14-p12 {
+  width: 100%;
+  height: 64px;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Frame 54-inner - контейнер для текста */
+.frame-54-inner-p12 {
+  width: 296px;
+  height: 32px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Текст заголовка */
+.text-title-p12 {
+  height: 32px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 32px;
+  letter-spacing: 0px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 116px;
+}
+
+/* Frame 47 - контейнер для списка */
+.frame-47-p12 {
+  width: 1232px;
+  height: 448px;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+/* Frame 38-inner - ВНУТРЕННИЙ вертикальная колонка */
+.frame-38-p12-inner {
+  width: 608px;
+  height: 448px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Frame 40 - ВНУТРЕННИЙ вертикальная колонка */
+.frame-40-p12 {
+  width: 608px;
+  height: 448px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Frame 54 - элемент списка */
+.frame-54-p12 {
+  width: 608px;
+  height: 64px;
+  display: flex;
+  flex-direction: row;
+}
+
+/* Frame 46 - контейнер внутри элемента */
+.frame-46-p12 {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Frame 58 - горизонтальный контейнер */
+.frame-58-p12 {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+/* Frame 10 - левая часть (аватар и имя) */
+.frame-10-p12 {
+  width: 515.22px;
+  height: 64px;
+  display: flex;
+  flex-direction: row;
+  padding: 24px;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Placeholder для изображения */
+.image-placeholder-p12 {
+  width: 32px;
+  height: 32px;
+  background: #F0F3F4;
+  border-radius: 50%;
+}
+
+/* Текст имени */
+.text-name-p12 {
+  width: 427.22px;
+  height: 20px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 140%;
+  letter-spacing: 0.3px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+}
+
+/* Frame 26 - правая часть (только 2D) */
+.frame-26-p12 {
+  width: 92.78px;
+  height: 64px;
+  display: flex;
+  flex-direction: row;
+  padding: 16px 8px;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Текст "2D" */
+.text-2d-p12 {
+  width: 23px;
+  height: 22px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 140%;
+  letter-spacing: 0.3px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Frame 1 - нижняя панель */
+.frame-1-p12 {
+  width: 1280px;
+  height: 112px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 24px;
+  box-sizing: border-box;
+  align-items: center;
+}
+
+/* Frame 29 - кнопка "Раунд 1/8" */
+.frame-29-p12 {
+  width: 240px;
+  height: 64px;
+  border-radius: 24px;
+  padding: 24px;
+  gap: 8px;
+  background: rgba(13, 13, 13, 0.8);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+/* Текст "Раунд 1/8" */
+.text-approach-1-p12 {
+  width: 101px;
+  height: 32px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 32px;
+  letter-spacing: 0px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Frame 2 - центральный блок с прогрессом */
+.frame-2-p12 {
+  width: 494px;
+  height: 64px;
+  border-radius: 24px;
+  padding: 24px;
+  gap: 8px;
+  background: rgba(13, 13, 13, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Frame 16 - цифры прогресса 1-8 */
+.frame-16-p12 {
+  width: 446px;
+  height: 26px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+/* Цифры шагов */
+.step-number-p12 {
+  width: 55.75px;
+  height: 32px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 150%;
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Активный шаг (1) - зеленый */
+.active-p12 {
+  color: #31A961;
+}
+
+/* Текущие шаги (2-8) - белые цифры */
+.current-p12 {
+  color: #FFFFFF;
+}
+
+/* Frame 18 - прогресс-бар */
+.frame-18-p12 {
+  width: 446px;
+  height: 6px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+/* Элементы прогресс-бара */
+.progress-step-p12 {
+  width: 48.75px;
+  height: 6px;
+  border-radius: 100px;
+}
+
+/* Активный прогресс-бар (1) - зеленый */
+.progress-step-p12.active-p12 {
+  background: #31A961;
+}
+
+/* Неактивные прогресс-бары (2-8) - серые */
+.progress-step-p12.inactive-p12 {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Frame 30 - блок с таймером */
+.frame-30-p12 {
+  width: 240px;
+  height: 64px;
+  border-radius: 24px;
+  padding: 8px;
+  gap: 8px;
+  background: #FF6600;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Иконка таймера */
+.timer-icon-p12 {
+  width: 24px;
+  height: 24px;
+}
+
+/* Текст таймера "2:00" */
+.text-timer-p12 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  color: #FFFFFF;
+}
