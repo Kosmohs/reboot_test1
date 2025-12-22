@@ -289,3 +289,187 @@
   font-size: 24px;
   color: #FFFFFF;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Добавь в конец файла Page21.css */
+
+/* Состояние загрузки */
+.page-21-p21.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top: 4px solid #31A961;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Состояние ошибки */
+.page-21-p21.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.error-message {
+  background: rgba(13, 13, 13, 0.9);
+  padding: 32px;
+  border-radius: 24px;
+  text-align: center;
+  max-width: 400px;
+}
+
+.error-message h3 {
+  color: #FF6600;
+  margin-bottom: 16px;
+}
+
+.error-message p {
+  color: #FFFFFF;
+  margin-bottom: 24px;
+}
+
+.error-message button {
+  background: #FF6600;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.error-message button:hover {
+  background: #e55c00;
+}
+
+/* Информация о местоположении */
+.location-info {
+  margin-left: 16px;
+  color: #FFFFFF;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+}
+
+.location-info .gym-name {
+  font-weight: 700;
+}
+
+.location-info .televisor-name {
+  opacity: 0.8;
+}
+
+/* Кнопки для отладки (можно убрать в production) */
+.debug-controls {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  display: flex;
+  gap: 8px;
+  z-index: 1000;
+}
+
+.debug-controls button {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.debug-controls button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.debug-controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+.frame-63-image-p21.no-image {
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+
+
+
+/* API уведомление */
+.api-error-notice {
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  background: rgba(255, 102, 0, 0.9);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+
+
+
+/* Информация о тренировке */
+.training-info {
+  position: absolute;
+  bottom: 60px;
+  left: 20px;
+  right: 20px;
+  background: rgba(13, 13, 13, 0.9);
+  padding: 12px;
+  border-radius: 12px;
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.training-title {
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.trainer-name {
+  font-size: 14px;
+  opacity: 0.8;
+}

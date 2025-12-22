@@ -99,7 +99,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 116px; /* ИЗМЕНЕНО: было 112px, теперь 116px как Full Body 2 */
+  width: 100%; /* ИЗМЕНЕНО: было 112px, теперь 116px как Full Body 2 */
 }
 
 /* Frame 55 - нижняя часть колонки (список упражнений) */

@@ -132,7 +132,8 @@
 
 /* Text "Раунд 1/8" */
 .text-round-p4 {
-  width: 101px;
+  /* width: 101px; */
+  width: 100%;
   height: 32px;
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;

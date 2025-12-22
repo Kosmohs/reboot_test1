@@ -1,22 +1,6 @@
 // src/App.jsx
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { TrainingProvider } from './contexts/TrainingContext';
-import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-
-function NavigationTracker() {
-  const location = useLocation();
-  
-  useEffect(() => {
-    console.log('🌐 NAVIGATION TRACKER:');
-    console.log('🌐 pathname:', location.pathname);
-    console.log('🌐 state:', location.state);
-    console.log('🌐 key:', location.key);
-    console.log('🌐 window.history.state:', window.history.state);
-  }, [location]);
-  
-  return null;
-}
 
 import HomePage from './pages/HomePage';
 import Zone1 from './pages/Zone1';
@@ -54,8 +38,6 @@ import Page23 from './pages/Page23';
 
 import { TestUseState } from './pages/PageTest';
 
-import SmartLayoutRouter from './components/SmartLayoutRouter';
-
 
 // import DateTimeDisplay from './components/DateTimeDisplay'; // ← ЗАКОММЕНТИРУЙТЕ
 import './App.css';
@@ -65,21 +47,12 @@ function App() {
     <TrainingProvider>
       <Router>
         <div className="App">
-          <NavigationTracker />
           {/* <DateTimeDisplay /> */} {/* ← ЗАКОММЕНТИРУЙТЕ */}
           <Routes>
-            {/* Умный роутер - ГЛАВНАЯ СТРАНИЦА */}
-            <Route path="/" element={<Navigate to="/smart" replace />} />
-
             <Route path="/" element={<HomePage />} />
             <Route path="/zone1" element={<Zone1 />} />
             <Route path="/zone2" element={<Zone2 />} />
             <Route path="/zone3" element={<Zone3 />} />
-
-            {/* Умный роутер - сам определяет какой Page показывать */}
-            <Route path="/smart" element={<SmartLayoutRouter />} />
-
-            {/* Индивидуальные страницы (для прямого доступа) */}
             <Route path="/page1" element={<Page1 />} />
             <Route path="/page1_1" element={<Page1_1 />} />
             <Route path="/page1_2" element={<Page1_2 />} />
@@ -111,9 +84,6 @@ function App() {
 
 
             <Route path="/pagetest" element={<TestUseState />} />
-
-            {/* ВСЕ неизвестные пути ведут на smart */}
-            <Route path="*" element={<Navigate to="/smart" replace />} />
           </Routes>
         </div>
       </Router>
