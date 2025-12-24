@@ -117,6 +117,72 @@ function filterTrainingsByTime(trainings) {
 
 
 
+/**
+ * Получает расписание для HIT ZONE (GET запрос с параметрами)
+ */
+// api.js - обновленный fetchTrainings()
+// export async function fetchTrainings() {
+//   try {
+//     const tvConfig = getTVConfig();
+    
+//     console.log('Запрос к /site/trainings:', {
+//       gym_id: tvConfig.gym_id,
+//       televisor_id: tvConfig.televisor_id,
+//       room_id: tvConfig.room_id
+//     });
+    
+//     const response = await api.get('/site/trainings', {
+//       params: {
+//         gym_id: tvConfig.gym_id,
+//         televisor_id: tvConfig.televisor_id,
+//         room_id: tvConfig.room_id
+//       }
+//     });
+    
+//     console.log('Ответ от API:', response.data);
+    
+//     // Фильтруем ВСЕ тренировки в HIT ZONE
+//     const hitZoneTrainings = response.data.data?.filter(item => 
+//       item.Room?.Id === '8b550c93-cf91-11f0-92a9-005056015d0b' || // HIT ZONE ID
+//       item.Room?.Title === 'HIT ZONE'
+//     ) || [];
+    
+//     if (hitZoneTrainings.length === 0) {
+//       console.log('Нет тренировок в HIT ZONE');
+//       return {
+//         success: false,
+//         error: 'Нет тренировок в HIT ZONE',
+//         data: null,
+//         allHitZoneTrainings: [],
+//         config: tvConfig
+//       };
+//     }
+    
+//     // Основная тренировка (первая с Scheme или первая в списке)
+//     const mainTraining = hitZoneTrainings.find(item => item.Scheme) || hitZoneTrainings[0];
+    
+//     return {
+//       success: true,
+//       data: mainTraining,           // Основная тренировка для отображения
+//       allHitZoneTrainings: hitZoneTrainings, // ВСЕ тренировки в HIT ZONE
+//       config: tvConfig,
+//       allData: response.data.data || []
+//     };
+    
+//   } catch (error) {
+//     console.error('Ошибка при загрузке:', error);
+    
+//     return {
+//       success: false,
+//       error: error.message,
+//       data: null,
+//       allHitZoneTrainings: [],
+//       config: getTVConfig()
+//     };
+//   }
+// }
+
+
 
 
 
@@ -204,8 +270,6 @@ export async function fetchTrainings() {
       const roomTitle = item.Room?.Title;
       // const isHitZone = roomId === '8b550c93-cf91-11f0-92a9-005056015d0b' || 
       //                  roomTitle === 'GYM ZONE';
-      // const isHitZone = roomId === '8b550c93-cf91-11f0-92a9-005056015d0b' || 
-      //                  roomTitle === 'GYM ZONE';
 
       // 1. Сначала ищем по ID из конфига
       if (roomId === tvConfig.room_id) {
@@ -234,6 +298,7 @@ export async function fetchTrainings() {
     
     // Фильтруем по времени
     const timeFiltered = filterTrainingsByTime(gymZoneTrainings);
+    // const timeFiltered = filterTrainingsByTime(hitZoneTrainings);
     
     // Выводим информацию о найденных тренировках
     if (timeFiltered.current) {
@@ -248,6 +313,7 @@ export async function fetchTrainings() {
     }
 
     // Если нет тренировок в HIT ZONE
+    // if (hitZoneTrainings.length === 0) {
     if (gymZoneTrainings.length === 0) {
       console.log('❌ НЕТ ТРЕНИРОВОК В GYM ZONE!');
       console.log('📋 Все комнаты в ответе:', 
@@ -261,6 +327,7 @@ export async function fetchTrainings() {
         success: false,
         error: 'Нет тренировок в HIT ZONE',
         data: null,
+        // allHitZoneTrainings: [],
         allgymZoneTrainings: [],
         config: tvConfig
       };
@@ -268,6 +335,7 @@ export async function fetchTrainings() {
     
     // 9. ЛОГ НАЙДЕННЫХ HIT ZONE ТРЕНИРОВОК
     console.log('🏋️ ВСЕ HIT ZONE ТРЕНИРОВКИ НА СЕГОДНЯ:');
+    // hitZoneTrainings.forEach((training, index) => {
     gymZoneTrainings.forEach((training, index) => {
       const isCurrent = timeFiltered.current?.AppointmentID === training.AppointmentID;
       const isNext = timeFiltered.next?.AppointmentID === training.AppointmentID;
@@ -292,8 +360,10 @@ export async function fetchTrainings() {
     } else if (timeFiltered.next) {
       mainTraining = timeFiltered.next;
       console.log('👑 Выбрана СЛЕДУЮЩАЯ тренировка (ближайшая в будущем)');
+    // } else if (hitZoneTrainings.length > 0) {
     } else if (gymZoneTrainings.length > 0) {
       // Если нет актуальных по времени, берем первую вообще
+      // mainTraining = hitZoneTrainings.find(item => item.Scheme) || hitZoneTrainings[0];
       mainTraining = gymZoneTrainings.find(item => item.Scheme) || gymZoneTrainings[0];
       console.log('👑 Выбрана первая доступная тренировка (нет актуальных по времени)');
     } else {
@@ -314,6 +384,7 @@ export async function fetchTrainings() {
     const result = {
       success: true,
       data: mainTraining,
+      // allHitZoneTrainings: hitZoneTrainings,
       allgymZoneTrainings: gymZoneTrainings,
       config: tvConfig,
       allData: allData,
@@ -336,6 +407,7 @@ export async function fetchTrainings() {
     console.log('- status:', result.status);
     console.log('- current тренировка:', !!result.timeFiltered.current);
     console.log('- next тренировка:', !!result.timeFiltered.next);
+    // console.log('- allHitZoneTrainings.length:', result.allHitZoneTrainings.length);
     console.log('- allgymZoneTrainings.length:', result.allgymZoneTrainings.length);
     
     console.log('🎬 =========== КОНЕЦ fetchTrainings ===========');
@@ -362,6 +434,7 @@ export async function fetchTrainings() {
       success: false,
       error: error.message,
       data: null,
+      // allHitZoneTrainings: [],
       allgymZoneTrainings: [],
       config: getTVConfig()
     };

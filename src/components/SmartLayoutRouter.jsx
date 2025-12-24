@@ -7,6 +7,7 @@ import { TrainingStateProvider, TrainingFlowRouter } from '../components/trainin
 
 import NextTrainingDisplay from './NextTrainingDisplay'; 
 import NoTrainingsDisplay from './NoTrainingsDisplay'; 
+import CurrentTrainingNoScheme from './CurrentTrainingNoScheme';
 
 // ТЕСТОВЫЕ ДАННЫЕ ДЛЯ РАЗНЫХ LAYOUT
 const TEST_PROGRAMS = {
@@ -301,15 +302,15 @@ function SmartLayoutRouter() {
   const [trainingData, setTrainingData] = useState(null);
   
   // ТЕСТОВЫЙ РЕЖИМ
-  const TEST_STATUS = 'available'; // Меняй тут для теста: 'current', 'next', 'no_trainings', 'available'
+  const TEST_STATUS = 'no_trainings'; // Меняй тут для теста: 'current', 'next', 'no_trainings', 'available'
   
   const TEST_MODE = false; // ← true = тестовый режим, false = работа с API
-  const TEST_LAYOUT = 'page1_2'; // ← МЕНЯЙ ЗДЕСЬ для теста
+  const TEST_LAYOUT = 'page1_1'; // ← МЕНЯЙ ЗДЕСЬ для теста
 
-    // '3-programs'       -> Page1
-    // '2-programs'       -> Page1_3
-    // '1-program-small'  -> Page1_1 (до 12 клиентов)
-    // '1-program-large'  -> Page1_2 (13-24 клиентов)
+    // '3-programs'       -> Page1                  current
+    // '2-programs'       -> Page1_3                next
+    // '1-program-small'  -> Page1_1 (до 12 клиентов) no_trainings
+    // '1-program-large'  -> Page1_2 (13-24 клиентов) available
 
 
   // Получаем конфигурацию телевизора
@@ -718,7 +719,7 @@ function SmartLayoutRouter() {
     //     return <NoTrainingsDisplay />;
     // }
 
-    
+
     // Рендерим в зависимости от статуса
     switch (status) {
         case 'current':
@@ -727,12 +728,13 @@ function SmartLayoutRouter() {
             console.log('🚀 Текущая тренировка со Scheme - запускаем флоу');
             return (
                 <TrainingStateProvider hitZoneData={trainingData}>
-                <TrainingFlowRouter />
+                    <TrainingFlowRouter />
                 </TrainingStateProvider>
             );
             } else {
-            console.log('⏰ Текущая тренировка без Scheme - показываем как активную');
-            return <NextTrainingDisplay trainingData={trainingData} />;
+                console.log('⏰ Текущая тренировка без Scheme - показываем как активную');
+                // return <NextTrainingDisplay trainingData={trainingData} />;
+                return <CurrentTrainingNoScheme trainingData={trainingData} />;
             }
             
         case 'next':

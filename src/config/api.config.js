@@ -1,6 +1,7 @@
 // src/config/api.config.js
 export const API_CONFIG = {
-  baseURL: 'https://109.233.108.14/api',
+  // baseURL: 'https://109.233.108.14/api',
+  baseURL: 'https://test.rebootstudio.kz/api',
   apiKey: 'I3d54a0P1dT1XmHQlBL7Md2Qtp5EZgxuZ4a6eb8SRH446V9chelZCbQB9I89Xctt',
   
   endpoints: {

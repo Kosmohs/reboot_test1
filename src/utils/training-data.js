@@ -239,7 +239,8 @@ export function parseHitZoneData(apiResponse) {
   
   // 9. Формируем trainingInfo основной тренировки
   const trainingInfo = {
-    name: mainTraining.Service?.Title || 'HIT ZONE',
+    // name: mainTraining.Service?.Title || 'HIT ZONE',
+    name: mainTraining.Service?.Title || 'GYM ZONE',
     time: mainTraining.StartDate,
     endTime: mainTraining.EndDate,
     trainer: mainTraining.Employee?.FullName || 'Тренер',
@@ -508,6 +509,13 @@ export async function loadHitZoneLayout(options = {}) {
   const { useCacheAsFallback = true } = options;
   
   console.log('🔍 [1] loadHitZoneLayout ВХОД', { useCacheAsFallback });
+
+//   console.log('🆔 Ищем тренировки для room_id:', tvConfig.room_id);
+//     console.log('📋 По конфигурации это должен быть:', 
+//     tvConfig.room_id === '71a5eec2-a066-11f0-9298-005056015d0b' ? 'GYM ZONE' : 
+//     tvConfig.room_id === '8b550c93-cf91-11f0-92a9-005056015d0b' ? 'HIT ZONE' : 
+//     'Неизвестная зона'
+//   );
   
   try {
     // 1. СНАЧАЛА ПРОБУЕМ API
