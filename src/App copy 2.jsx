@@ -50,12 +50,14 @@ import Page21 from './pages/Page21';
 import Page21_test from './pages/Page21_test';
 import Page22 from './pages/Page22';
 import Page23 from './pages/Page23';
+
+
 import { TestUseState } from './pages/PageTest';
 
-// ИМПОРТИРУЕМ TVSetupPage
-import TVSetupPage from './pages/TVSetupPage'; // ← ДОБАВЬ ЭТОТ ИМПОРТ
 import SmartLayoutRouter from './components/SmartLayoutRouter';
 
+
+// import DateTimeDisplay from './components/DateTimeDisplay'; // ← ЗАКОММЕНТИРУЙТЕ
 import './App.css';
 
 function App() {
@@ -64,41 +66,8 @@ function App() {
       <Router>
         <div className="App">
           <NavigationTracker />
-          {/* <DateTimeDisplay /> */}
-          
-          {/* Временная панель для тестирования */}
-          <div style={{
-            position: 'fixed',
-            top: '10px',
-            right: '10px',
-            background: 'rgba(0,0,0,0.8)',
-            color: 'white',
-            padding: '10px',
-            borderRadius: '5px',
-            zIndex: 9999,
-            fontSize: '12px'
-          }}>
-            <strong>🧪 Тест настройки:</strong>
-            <div style={{ display: 'flex', gap: '5px', marginTop: '5px' }}>
-              <button onClick={() => {
-                localStorage.removeItem('tvConfig');
-                alert('Настройки очищены!');
-              }} style={{ padding: '5px', fontSize: '10px' }}>
-                🧹 Очистить
-              </button>
-              <button onClick={() => window.location.href = '/setup'} style={{ padding: '5px', fontSize: '10px' }}>
-                ⚙️ Настройка
-              </button>
-              <button onClick={() => window.location.href = '/smart'} style={{ padding: '5px', fontSize: '10px' }}>
-                📺 Smart
-              </button>
-            </div>
-          </div>
-          
+          {/* <DateTimeDisplay /> */} {/* ← ЗАКОММЕНТИРУЙТЕ */}
           <Routes>
-            {/* Страница настройки телевизора - ДОБАВЬ ЭТОТ РОУТ */}
-            <Route path="/setup" element={<TVSetupPage />} />
-            
             {/* Умный роутер - ГЛАВНАЯ СТРАНИЦА */}
             <Route path="/" element={<Navigate to="/smart" replace />} />
 
@@ -139,6 +108,7 @@ function App() {
             <Route path="/page21_test" element={<Page21_test />} />
             <Route path="/page22" element={<Page22 />} />
             <Route path="/page23" element={<Page23 />} />
+
 
             <Route path="/pagetest" element={<TestUseState />} />
 

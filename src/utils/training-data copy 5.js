@@ -14,34 +14,16 @@ export function cacheHitZoneData(data) {
     console.log('   Получены данные:', {
         success: data?.success,
         hasScheme: !!data?.Scheme,
-        status: data?.status,
         schemeLength: data?.Scheme?.length
     });
     
-//   try {
-//     const cacheData = {
-//       data: data,
-//       timestamp: Date.now()
-//     };
-//     localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
-//     console.log('✅ Данные сохранены в кэш');
-//   } catch (error) {
-//     console.warn('⚠️ Не удалось сохранить в кэш:', error);
-//   }
-
   try {
     const cacheData = {
-      data: {
-        ...data,
-        // Гарантируем, что у кэшированных данных есть статус
-        status: data.status || 'available'
-      },
-      timestamp: Date.now(),
-      version: 'v2' // Добавляем версию кэша
+      data: data,
+      timestamp: Date.now()
     };
-    
     localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
-    console.log('✅ Данные сохранены в кэш, статус:', cacheData.data.status);
+    console.log('✅ Данные сохранены в кэш');
   } catch (error) {
     console.warn('⚠️ Не удалось сохранить в кэш:', error);
   }
@@ -84,42 +66,21 @@ export function getCachedHitZoneData() {
   
   console.log('   Размер данных:', cachedStr.length, 'байт');
   
-//   try {
-//     const { data, timestamp } = JSON.parse(cachedStr);
-//     console.log('   ✅ Кэш распарсен успешно');
-//     console.log('   Время создания:', new Date(timestamp).toLocaleTimeString());
-//     console.log('   Данные:', {
-//       success: data?.success,
-//       layout: data?.layout
-//     });
-    
-//     return data;
-//   } catch (error) {
-//     console.error('   ❌ Ошибка парсинга кэша:', error);
-//     console.log('   Сырые данные (первые 200 символов):', cachedStr.substring(0, 200));
-//     return null;
-//   }
-
   try {
-    const cacheData = JSON.parse(cachedStr);
+    const { data, timestamp } = JSON.parse(cachedStr);
+    console.log('   ✅ Кэш распарсен успешно');
+    console.log('   Время создания:', new Date(timestamp).toLocaleTimeString());
+    console.log('   Данные:', {
+      success: data?.success,
+      layout: data?.layout
+    });
     
-    // Извлекаем данные (поддерживаем оба формата)
-    let data = cacheData.data || cacheData;
-    
-    // ДОБАВЛЯЕМ СТАТУС ЕСЛИ ЕГО НЕТ
-    if (!data.status) {
-      console.log('⚠️ У кэшированных данных нет статуса, добавляем "available"');
-      data.status = 'available';
-    }
-    
-    console.log('✅ Кэш загружен, статус:', data.status);
     return data;
-    
   } catch (error) {
-    console.error('Ошибка парсинга кэша:', error);
+    console.error('   ❌ Ошибка парсинга кэша:', error);
+    console.log('   Сырые данные (первые 200 символов):', cachedStr.substring(0, 200));
     return null;
   }
-
 }
 
 export function clearHitZoneCache() {
@@ -130,35 +91,27 @@ export function clearHitZoneCache() {
 
 
 export function parseHitZoneData(apiResponse) {
-  console.log('🔄 training-data.js: parseHitZoneData ВХОД:', {
+
+    console.log('🔄 training-data.js: parseHitZoneData ВХОД:', {
     success: apiResponse?.success,
     hasData: !!apiResponse?.data,
-    status: apiResponse?.status,
-    hasCurrent: !!apiResponse?.timeFiltered?.current,
-    hasNext: !!apiResponse?.timeFiltered?.next
+    dataTitle: apiResponse?.data?.Service?.Title,
+    hasScheme: !!apiResponse?.data?.Scheme,
+    hasAllHitZoneTrainings: !!apiResponse?.allHitZoneTrainings,
+    allHitZoneTrainingsLength: apiResponse?.allHitZoneTrainings?.length
   });
 
-  // 1. Определяем какую тренировку использовать
-  let mainTraining;
-  let status = apiResponse?.status || 'no_trainings';
+  console.log('parseHitZoneData: входные данные:', {
+    success: apiResponse?.success,
+    hasData: !!apiResponse?.data,
+    hitZoneTrainingsCount: apiResponse?.allHitZoneTrainings?.length || 0
+  });
   
-  if (apiResponse?.timeFiltered?.current) {
-    mainTraining = apiResponse.timeFiltered.current;
-    status = 'current';
-  } else if (apiResponse?.timeFiltered?.next) {
-    mainTraining = apiResponse.timeFiltered.next;
-    status = 'next';
-  } else if (apiResponse?.data) {
-    mainTraining = apiResponse.data;
-    status = 'available'; // Есть тренировка, но не по времени
-  }
-  
-  if (!mainTraining) {
-    console.log('parseHitZoneData: Нет данных для тренировки');
+  if (!apiResponse?.success || !apiResponse.data) {
+    console.log('parseHitZoneData: Нет данных');
     return {
       success: false,
       error: apiResponse?.error || 'Нет данных',
-      status: 'no_trainings',
       layout: 'page1_1',
       programCount: 1,
       clientCount: 0,
@@ -172,17 +125,21 @@ export function parseHitZoneData(apiResponse) {
       programData: {},
       clients: [],
       Scheme: [],
-      allPrograms: []
+      allPrograms: [] // Добавляем для совместимости
     };
   }
-
-  // 2. Логируем статус
-  console.log(`parseHitZoneData: статус "${status}", тренировка: "${mainTraining.Service?.Title}"`);
-
-  // 3. Берем ВСЕ тренировки HIT ZONE для определения layout
+  
+  const mainTraining = apiResponse.data;
+  const config = apiResponse.config;
   const allHitZoneTrainings = apiResponse.allHitZoneTrainings || [];
   
-  // 4. Собираем данные ВСЕХ программ в HIT ZONE
+  console.log('parseHitZoneData: информация о тренировках:', {
+    totalProgramsInHITZONE: allHitZoneTrainings.length,
+    mainTrainingName: mainTraining.Service?.Title,
+    hasScheme: !!mainTraining.Scheme
+  });
+  
+  // 1. Собираем данные ВСЕХ программ в HIT ZONE
   const allPrograms = allHitZoneTrainings.map(training => ({
     id: training.AppointmentID,
     name: training.Service?.Title || 'Без названия',
@@ -191,37 +148,47 @@ export function parseHitZoneData(apiResponse) {
     clients: training.Clients || [],
     clientCount: training.Clients?.length || 0,
     capacity: training.Capacity || 0,
-    hasScheme: !!training.Scheme,
-    // НОВОЕ: Добавляем тайминги тренировки
-    training: training.training || null
+    hasScheme: !!training.Scheme
   }));
   
-  // 5. Считаем общее количество клиентов
+  // 2. Считаем общее количество клиентов
   const totalClients = allPrograms.reduce((sum, program) => sum + program.clientCount, 0);
   
-  // 6. ВЫБОР LAYOUT (сохраняем старую логику)
+  // 3. ВЫБОР LAYOUT ПО ТВОИМ ПРАВИЛАМ:
   let layout;
   const programCount = allPrograms.length;
   
+  // ПРАВИЛО 1: 3 программы → page1
   if (programCount >= 3) {
     layout = 'page1';
-  } else if (programCount === 2) {
+  }
+  // ПРАВИЛО 2: 2 программы → page1_3
+  else if (programCount === 2) {
     layout = 'page1_3';
-  } else if (programCount === 1) {
+  }
+  // ПРАВИЛО 3: 1 программа
+  else if (programCount === 1) {
+    // ПРАВИЛО 3а: 1-12 клиентов → page1_1
     if (totalClients <= 12) {
       layout = 'page1_1';
-    } else if (totalClients <= 24) {
-      layout = 'page1_2';
-    } else {
+    }
+    // ПРАВИЛО 3б: 13-24 клиентов → page1_2
+    else if (totalClients <= 24) {
       layout = 'page1_2';
     }
-  } else {
+    // ПРАВИЛО 3в: больше 24 клиентов → page1_2 (максимум)
+    else {
+      layout = 'page1_2';
+    }
+  }
+  // ПРАВИЛО 4: Нет программ → page1_1 (дефолт)
+  else {
     layout = 'page1_1';
   }
   
-  console.log(`Выбран layout: ${layout} (${programCount} программ, ${totalClients} клиентов, статус: ${status})`);
+  console.log(`Выбран layout: ${layout} (${programCount} программ, ${totalClients} клиентов)`);
   
-  // 7. Клиенты основной тренировки
+  // 4. Клиенты основной тренировки
   const allClients = mainTraining.Clients || [];
   const formattedClients = allClients.map(client => ({
     ClientID: client.ClientID,
@@ -230,29 +197,24 @@ export function parseHitZoneData(apiResponse) {
     StationID: client.StationID
   }));
   
-  // 8. Scheme основной тренировки
+  // 5. Scheme основной тренировки
   let Scheme = [];
   if (mainTraining.Scheme && Array.isArray(mainTraining.Scheme)) {
     Scheme = mainTraining.Scheme;
     console.log(`Scheme основной тренировки: ${Scheme.length} раундов`);
   }
   
-  // 9. Формируем trainingInfo основной тренировки
+  // 6. Формируем trainingInfo основной тренировки
   const trainingInfo = {
     name: mainTraining.Service?.Title || 'HIT ZONE',
     time: mainTraining.StartDate,
-    endTime: mainTraining.EndDate,
     trainer: mainTraining.Employee?.FullName || 'Тренер',
     round: 1,
     totalRounds: Scheme.length || 16,
-    currentApproach: 1,
-    // НОВОЕ: Добавляем тайминги тренировки
-    training: mainTraining.training || null,
-    // НОВОЕ: Добавляем статус
-    status: status
+    currentApproach: 1
   };
   
-  // 10. ProgramData
+  // 7. ProgramData
   const programData = {
     title: mainTraining.Service?.Title,
     description: mainTraining.Service?.Description,
@@ -261,39 +223,36 @@ export function parseHitZoneData(apiResponse) {
   
   const result = {
     success: true,
-    status: status, // НОВОЕ: Добавляем статус
     layout: layout,
-    programCount: programCount,
-    clientCount: totalClients,
+    programCount: programCount,        // Реальное количество программ
+    clientCount: totalClients,         // Общее количество клиентов
     trainingInfo: trainingInfo,
     programData: programData,
-    clients: formattedClients,
-    Scheme: Scheme,
-    allPrograms: allPrograms,
-    config: apiResponse.config,
-    rawData: mainTraining,
-    // НОВОЕ: Добавляем информацию о времени
-    timeInfo: {
-      currentTraining: apiResponse.timeFiltered?.current,
-      nextTraining: apiResponse.timeFiltered?.next,
-      status: status,
-      refreshAt: status === 'current' ? mainTraining.EndDate : 
-                 status === 'next' ? mainTraining.StartDate : null
-    }
+    clients: formattedClients,         // Клиенты основной тренировки
+    Scheme: Scheme,                    // Scheme основной тренировки
+    allPrograms: allPrograms,          // Все программы для отображения
+    config: config,
+    rawData: mainTraining
   };
   
   console.log('parseHitZoneData: финальный результат:', {
-    status: result.status,
     layout: result.layout,
     programCount: result.programCount,
     totalClients: result.clientCount,
     hasScheme: result.Scheme.length > 0,
-    refreshAt: result.timeInfo.refreshAt
+    hasClients: result.clients.length > 0
   });
 
+  console.log('🔄 training-data.js: parseHitZoneData ВЫХОД:', {
+    layout: result.layout,
+    programCount: result.programCount,
+    clientCount: result.clientCount,
+    hasScheme: result.Scheme?.length > 0,
+    hasClients: result.clients?.length > 0
+  });
+  
   return result;
 }
-
 
 // export async function loadHitZoneLayout() {
 
@@ -516,49 +475,37 @@ export async function loadHitZoneLayout(options = {}) {
     
     console.log('📥 [3] API ответ получен:', {
       success: apiResponse?.success,
-      status: apiResponse?.status,
-      hasCurrent: !!apiResponse?.timeFiltered?.current,
-      hasNext: !!apiResponse?.timeFiltered?.next
+      hasData: !!apiResponse?.data,
+      hasScheme: !!apiResponse?.data?.Scheme
     });
     
     if (apiResponse?.success) {
-      // 2. ПАРСИМ ДАННЫЕ
+      // 2. ЕСЛИ API УСПЕШНО - ПАРСИМ И КЭШИРУЕМ
       console.log('🔄 [4] API успешен, парсим данные...');
       let parsedData;
       try {
         parsedData = parseHitZoneData(apiResponse);
-        console.log('✅ [5] Данные спарсены, статус:', parsedData.status);
+        console.log('✅ [5] Данные спарсены');
       } catch (parseError) {
         console.error('❌ [5.1] Ошибка парсинга:', parseError);
         throw parseError;
       }
       
-      // 3. КЭШИРУЕМ ТОЛЬКО ЕСЛИ ЭТО АКТУАЛЬНАЯ ТРЕНИРОВКА
-      // Не кэшируем состояние "следующая тренировка", если она далеко
-      if (parsedData.status === 'current' || parsedData.status === 'next') {
-        const startTime = new Date(parsedData.timeInfo?.nextTraining?.StartDate || parsedData.trainingInfo.time);
-        const now = new Date();
-        const minutesUntil = Math.round((startTime - now) / 60000);
-        
-        // Кэшируем только если тренировка в пределах 2 часов
-        if (minutesUntil <= 120) {
-          console.log('💾 [6] Сохраняю в кэш (тренировка скоро)...');
-          try {
-            cacheHitZoneData(parsedData);
-            console.log('✅ [6.1] Данные сохранены в кэш');
-          } catch (cacheError) {
-            console.error('❌ [6.2] Ошибка кэширования:', cacheError);
-          }
-        } else {
-          console.log('⏰ [6] Не кэширую - тренировка слишком далеко (через', minutesUntil, 'мин)');
-        }
+      // 3. СОХРАНЯЕМ В КЭШ
+      console.log('💾 [6] Сохраняю в кэш...');
+      try {
+        cacheHitZoneData(parsedData);
+        console.log('✅ [6.1] Данные сохранены в кэш');
+      } catch (cacheError) {
+        console.error('❌ [6.2] Ошибка кэширования:', cacheError);
+        // Не прерываем, даже если не удалось закэшировать
       }
       
       // 4. ВОЗВРАЩАЕМ СВЕЖИЕ ДАННЫЕ
-      console.log('✅ [7] Возвращаю свежие данные с API, статус:', parsedData.status);
+      console.log('✅ [7] Возвращаю свежие данные с API');
       return {
         ...parsedData,
-        source: 'api-fresh',
+        source: 'api-fresh', // метка что данные свежие с API
         timestamp: Date.now()
       };
     }
@@ -569,30 +516,12 @@ export async function loadHitZoneLayout(options = {}) {
       const cached = getCachedHitZoneData();
       
       if (cached) {
-        console.log('✅ [9] Возвращаю данные из кэша, статус:', cached.status);
-        
-        // Проверяем, не устарели ли кэшированные данные по времени
-        if (cached.timeInfo?.refreshAt) {
-          const refreshTime = new Date(cached.timeInfo.refreshAt);
-          const now = new Date();
-          
-          if (now > refreshTime) {
-            console.log('⏰ [9.1] Кэшированные данные устарели (по времени refreshAt)');
-            // Не возвращаем устаревшие данные
-          } else {
-            return {
-              ...cached,
-              source: 'cache-fallback',
-              apiError: apiResponse?.error
-            };
-          }
-        } else {
-          return {
-            ...cached,
-            source: 'cache-fallback',
-            apiError: apiResponse?.error
-          };
-        }
+        console.log('✅ [9] Возвращаю данные из кэша');
+        return {
+          ...cached,
+          source: 'cache-fallback', // метка что данные из кэша
+          apiError: apiResponse?.error
+        };
       }
     }
     
@@ -608,7 +537,7 @@ export async function loadHitZoneLayout(options = {}) {
       console.log('🆘 Последняя попытка: кэш любой ценой');
       const cached = getCachedHitZoneData();
       if (cached) {
-        console.log('🆘 Возвращаю кэш из catch-блока, статус:', cached.status);
+        console.log('🆘 Возвращаю кэш из catch-блока');
         return {
           ...cached,
           source: 'cache-emergency',
@@ -620,7 +549,6 @@ export async function loadHitZoneLayout(options = {}) {
     throw error;
   }
 }
-
 
 
 // Функция для получения сохраненной конфигурации

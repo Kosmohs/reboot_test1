@@ -45,7 +45,20 @@ export const TrainingStateProvider = ({ children, hitZoneData }) => {
   
   // Scheme данные (ВАЖНО: должен быть объявлен до функций, которые его используют)
   const scheme = useMemo(() => {
-    return hitZoneData?.Scheme || [];
+    // return hitZoneData?.Scheme || [];
+    const data = hitZoneData?.Scheme || [];
+  
+    console.log('🔍 SCHEME ДАННЫЕ ИЗ hitZoneData:', {
+        source: 'TrainingStateProvider',
+        hasHitZoneData: !!hitZoneData,
+        rawSchemeFromData: hitZoneData?.Scheme,
+        schemeLength: data.length,
+        firstRoundData: data[0],
+        firstClientName: data[0]?.[0]?.client_name,
+        firstClientId: data[0]?.[0]?.client_id
+    });
+    
+    return data;
   }, [hitZoneData]);
   
   // Определяем layout на основе данных
@@ -91,10 +104,10 @@ export const TrainingStateProvider = ({ children, hitZoneData }) => {
     if (!hitZoneData || !hitZoneData.success) {
       return {
         name: 'Тренировка',
-        warmup_time: 60,
-        exercise_time: 60,
-        rest_time: 60,
-        transition_time: 60,
+        warmup_time: 2,
+        exercise_time: 2,
+        rest_time: 2,
+        transition_time: 2,
         number_of_approaches: 4
       };
     }

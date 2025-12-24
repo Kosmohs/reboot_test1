@@ -18,105 +18,6 @@ const api = axios.create({
   }
 });
 
-
-
-
-
-// Добавим вспомогательные функции в начало api.js, после импортов
-
-/**
- * Проверяет, находится ли текущее время между start и end
- */
-function isNowBetween(startDateStr, endDateStr) {
-  try {
-    const now = new Date();
-    const start = new Date(startDateStr);
-    const end = new Date(endDateStr);
-    
-    // Добавляем небольшую буферную зону (1 минута) для начала тренировки
-    const bufferStart = new Date(start.getTime() - 60000); // 1 минута до начала
-    const bufferEnd = new Date(end.getTime() + 60000); // 1 минута после окончания
-    
-    return now >= bufferStart && now <= bufferEnd;
-  } catch (error) {
-    console.error('Ошибка в isNowBetween:', error);
-    return false;
-  }
-}
-
-/**
- * Проверяет, находится ли тренировка в будущем
- */
-function isFutureTraining(startDateStr) {
-  try {
-    const now = new Date();
-    const start = new Date(startDateStr);
-    // Считаем тренировку будущей, если она начнется через минуту или позже
-    return start > new Date(now.getTime() + 60000);
-  } catch (error) {
-    console.error('Ошибка в isFutureTraining:', error);
-    return false;
-  }
-}
-
-/**
- * Фильтрует тренировки по времени и возвращает актуальные
- */
-function filterTrainingsByTime(trainings) {
-  const now = new Date();
-  console.log(`⏰ Текущее время: ${now.toLocaleString()}`);
-  
-  const currentTrainings = trainings.filter(training => {
-    const isCurrent = isNowBetween(training.StartDate, training.EndDate);
-    if (isCurrent) {
-      console.log(`🏋️ ТЕКУЩАЯ тренировка: "${training.Service?.Title}" с ${training.StartDate} до ${training.EndDate}`);
-    }
-    return isCurrent;
-  });
-  
-  if (currentTrainings.length > 0) {
-    console.log(`✅ Найдено ${currentTrainings.length} текущих тренировок`);
-    return {
-      current: currentTrainings[0], // Берем первую текущую
-      next: null,
-      allCurrent: currentTrainings
-    };
-  }
-  
-  // Ищем следующую тренировку
-  const futureTrainings = trainings
-    .filter(t => isFutureTraining(t.StartDate))
-    .sort((a, b) => new Date(a.StartDate) - new Date(b.StartDate));
-  
-  if (futureTrainings.length > 0) {
-    const nextTraining = futureTrainings[0];
-    console.log(`⏭️ СЛЕДУЮЩАЯ тренировка: "${nextTraining.Service?.Title}" в ${nextTraining.StartDate}`);
-    
-    // Лог всех будущих тренировок
-    console.log('📅 Все будущие тренировки:');
-    futureTrainings.forEach((t, i) => {
-      const timeUntil = Math.round((new Date(t.StartDate) - now) / 60000);
-      console.log(`  ${i+1}. ${t.Service?.Title} в ${t.StartDate} (через ${timeUntil} мин)`);
-    });
-    
-    return {
-      current: null,
-      next: nextTraining,
-      allFuture: futureTrainings
-    };
-  }
-  
-  console.log('📭 Нет текущих и будущих тренировок');
-  return {
-    current: null,
-    next: null,
-    allCurrent: [],
-    allFuture: []
-  };
-}
-
-
-
 /**
  * Получает расписание для HIT ZONE (GET запрос с параметрами)
  */
@@ -278,27 +179,8 @@ export async function fetchTrainings() {
       return isHitZone;
     });
     
-    // console.log(`🎯 РЕЗУЛЬТАТ ФИЛЬТРАЦИИ: ${hitZoneTrainings.length} тренировок в HIT ZONE`);
-
-    // === НОВЫЙ КОД: ФИЛЬТРАЦИЯ ПО ВРЕМЕНИ ===
-    console.log('⏰ ФИЛЬТРУЮ ТРЕНИРОВКИ ПО ВРЕМЕНИ...');
+    console.log(`🎯 РЕЗУЛЬТАТ ФИЛЬТРАЦИИ: ${hitZoneTrainings.length} тренировок в HIT ZONE`);
     
-    // Фильтруем по времени
-    const timeFiltered = filterTrainingsByTime(hitZoneTrainings);
-    
-    // Выводим информацию о найденных тренировках
-    if (timeFiltered.current) {
-      console.log(`🎯 ВЫБРАНА ТЕКУЩАЯ тренировка: "${timeFiltered.current.Service?.Title}"`);
-      console.log(`   Время: ${timeFiltered.current.StartDate} - ${timeFiltered.current.EndDate}`);
-    } else if (timeFiltered.next) {
-      const timeUntil = Math.round((new Date(timeFiltered.next.StartDate) - new Date()) / 60000);
-      console.log(`⏭️ ВЫБРАНА СЛЕДУЮЩАЯ тренировка: "${timeFiltered.next.Service?.Title}"`);
-      console.log(`   Начнется через ${timeUntil} минут (в ${timeFiltered.next.StartDate})`);
-    } else {
-      console.log('📭 НЕТ АКТУАЛЬНЫХ ТРЕНИРОВОК ПО ВРЕМЕНИ');
-    }
-
-    // Если нет тренировок в HIT ZONE
     if (hitZoneTrainings.length === 0) {
       console.log('❌ НЕТ ТРЕНИРОВОК В HIT ZONE!');
       console.log('📋 Все комнаты в ответе:', 
@@ -318,48 +200,28 @@ export async function fetchTrainings() {
     }
     
     // 9. ЛОГ НАЙДЕННЫХ HIT ZONE ТРЕНИРОВОК
-    console.log('🏋️ ВСЕ HIT ZONE ТРЕНИРОВКИ НА СЕГОДНЯ:');
+    console.log('🏋️ НАЙДЕННЫЕ HIT ZONE ТРЕНИРОВКИ:');
     hitZoneTrainings.forEach((training, index) => {
-      const isCurrent = timeFiltered.current?.AppointmentID === training.AppointmentID;
-      const isNext = timeFiltered.next?.AppointmentID === training.AppointmentID;
-      const status = isCurrent ? 'ТЕКУЩАЯ' : isNext ? 'СЛЕДУЮЩАЯ' : 'неактивная';
-      
-      console.log(`  [${index}] [${status}]`, {
+      console.log(`  [${index}]`, {
         title: training.Service?.Title,
+        trainer: training.Employee?.FullName,
         time: training.StartDate,
-        duration: `${training.Duration} мин`,
         hasScheme: !!training.Scheme,
-        capacity: `${training.Clients?.length || 0}/${training.Capacity}`
+        schemeLength: training.Scheme?.length,
+        clients: training.Clients?.length || 0,
+        capacity: training.Capacity,
+        clientsList: training.Clients?.map(c => c.Name) || []
       });
     });
     
-    // 10. ВЫБОР ОСНОВНОЙ ТРЕНИРОВКИ (ОБНОВЛЯЕМ!)
-    console.log('👑 ВЫБИРАЮ ОСНОВНУЮ ТРЕНИРОВКУ ДЛЯ ОТОБРАЖЕНИЯ...');
-    
-    let mainTraining;
-    if (timeFiltered.current) {
-      mainTraining = timeFiltered.current;
-      console.log('👑 Выбрана ТЕКУЩАЯ тренировка (активная сейчас)');
-    } else if (timeFiltered.next) {
-      mainTraining = timeFiltered.next;
-      console.log('👑 Выбрана СЛЕДУЮЩАЯ тренировка (ближайшая в будущем)');
-    } else if (hitZoneTrainings.length > 0) {
-      // Если нет актуальных по времени, берем первую вообще
-      mainTraining = hitZoneTrainings.find(item => item.Scheme) || hitZoneTrainings[0];
-      console.log('👑 Выбрана первая доступная тренировка (нет актуальных по времени)');
-    } else {
-      mainTraining = null;
-      console.log('👑 Нет тренировок для отображения');
-    }
-
-    if (mainTraining) {
-      console.log('👑 Выбрана тренировка:', {
-        title: mainTraining.Service?.Title,
-        time: mainTraining.StartDate,
-        hasScheme: !!mainTraining.Scheme,
-        status: timeFiltered.current ? 'ТЕКУЩАЯ' : timeFiltered.next ? 'СЛЕДУЮЩАЯ' : 'ПРОСТО ДОСТУПНАЯ'
-      });
-    }
+    // 10. ВЫБОР ОСНОВНОЙ ТРЕНИРОВКИ
+    console.log('👑 ВЫБИРАЮ ОСНОВНУЮ ТРЕНИРОВКУ...');
+    const mainTraining = hitZoneTrainings.find(item => item.Scheme) || hitZoneTrainings[0];
+    console.log('👑 Выбрана тренировка:', {
+      title: mainTraining.Service?.Title,
+      hasScheme: !!mainTraining.Scheme,
+      clientsCount: mainTraining.Clients?.length
+    });
     
     // 11. ПОДГОТОВКА РЕЗУЛЬТАТА
     const result = {
@@ -367,27 +229,14 @@ export async function fetchTrainings() {
       data: mainTraining,
       allHitZoneTrainings: hitZoneTrainings,
       config: tvConfig,
-      allData: allData,
-      // НОВЫЕ ПОЛЯ:
-      timeFiltered: {
-        current: timeFiltered.current,
-        next: timeFiltered.next,
-        allCurrent: timeFiltered.allCurrent || [],
-        allFuture: timeFiltered.allFuture || []
-      },
-      // Статус для UI
-      status: mainTraining ? 
-        (timeFiltered.current ? 'current' : timeFiltered.next ? 'next' : 'available') : 
-        'no_trainings'
+      allData: allData
     };
     
     console.log('📤 ПОДГОТОВЛЕН РЕЗУЛЬТАТ ДЛЯ ВОЗВРАТА:');
     console.log('- success:', result.success);
     console.log('- data.title:', result.data?.Service?.Title);
-    console.log('- status:', result.status);
-    console.log('- current тренировка:', !!result.timeFiltered.current);
-    console.log('- next тренировка:', !!result.timeFiltered.next);
     console.log('- allHitZoneTrainings.length:', result.allHitZoneTrainings.length);
+    console.log('- allData.length:', result.allData.length);
     
     console.log('🎬 =========== КОНЕЦ fetchTrainings ===========');
     

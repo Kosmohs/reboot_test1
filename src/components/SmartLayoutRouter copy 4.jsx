@@ -5,21 +5,15 @@ import { loadHitZoneLayout } from '../utils/training-data';
 import { getTVConfig } from '../config/tv-config';
 import { TrainingStateProvider, TrainingFlowRouter } from '../components/training-flow';
 
-import NextTrainingDisplay from './NextTrainingDisplay'; 
-import NoTrainingsDisplay from './NoTrainingsDisplay'; 
-
 // ТЕСТОВЫЕ ДАННЫЕ ДЛЯ РАЗНЫХ LAYOUT
 const TEST_PROGRAMS = {
   'page1': { // 3 программы
     layout: 'page1',
     programCount: 3,
     clientCount: 18,
-    status: 'current', // или 'next', 'no_trainings' для теста разных сценариев
     trainingInfo: {
       name: 'HIT ZONE (Тест 3 программы)',
-    //   time: '16:00',
-      time: new Date(Date.now()).toISOString(), // Сейчас
-      endTime: new Date(Date.now() + 55 * 60000).toISOString(), // Через 55 минут
+      time: '16:00',
       trainer: 'Тренер Тест',
       round: 1,
       totalRounds: 16,
@@ -103,12 +97,9 @@ const TEST_PROGRAMS = {
     layout: 'page1_3',
     programCount: 2,
     clientCount: 16,
-    status: 'next', // Тестируем следующий статус
     trainingInfo: {
       name: 'HIT ZONE (Тест 2 программы)',
-    //   time: '16:00',
-      time: new Date(Date.now() + 3600000).toISOString(), // Через 1 час
-      endTime: new Date(Date.now() + 3600000 + 55 * 60000).toISOString(), // Через 1:55
+      time: '16:00',
       trainer: 'Тренер Тест',
       round: 1,
       totalRounds: 16,
@@ -174,12 +165,9 @@ const TEST_PROGRAMS = {
     layout: 'page1_1',
     programCount: 1,
     clientCount: 8,
-    status: 'no_trainings', // Тестируем отсутствие тренировок
     trainingInfo: {
       name: 'Steppe Burn (Тест 1-12 клиентов)',
-    //   time: '16:00',
-      time: new Date(Date.now() - 7200000).toISOString(), // 2 часа назад
-      endTime: new Date(Date.now() - 7200000 + 55 * 60000).toISOString(), // 1:05 назад
+      time: '16:00',
       trainer: 'Нургалиева Зауре',
       round: 1,
       totalRounds: 16,
@@ -231,12 +219,9 @@ const TEST_PROGRAMS = {
     layout: 'page1_2',
     programCount: 1,
     clientCount: 15,
-    status: 'available', // Тестируем "доступно, но не по времени"
     trainingInfo: {
       name: 'Steppe Burn (Тест 12-24 клиентов)',
-    //   time: '16:00',
-      time: new Date(Date.now() + 7200000).toISOString(), // Через 2 часа
-      endTime: new Date(Date.now() + 7200000 + 55 * 60000).toISOString(), // Через 2:55
+      time: '16:00',
       trainer: 'Нургалиева Зауре',
       round: 1,
       totalRounds: 16,
@@ -301,16 +286,8 @@ function SmartLayoutRouter() {
   const [trainingData, setTrainingData] = useState(null);
   
   // ТЕСТОВЫЙ РЕЖИМ
-  const TEST_STATUS = 'available'; // Меняй тут для теста: 'current', 'next', 'no_trainings', 'available'
-  
   const TEST_MODE = false; // ← true = тестовый режим, false = работа с API
-  const TEST_LAYOUT = 'page1_2'; // ← МЕНЯЙ ЗДЕСЬ для теста
-
-    // '3-programs'       -> Page1
-    // '2-programs'       -> Page1_3
-    // '1-program-small'  -> Page1_1 (до 12 клиентов)
-    // '1-program-large'  -> Page1_2 (13-24 клиентов)
-
+  const TEST_LAYOUT = 'page1'; // ← МЕНЯЙ ЗДЕСЬ для теста
 
   // Получаем конфигурацию телевизора
   useEffect(() => {
@@ -334,78 +311,49 @@ function SmartLayoutRouter() {
         let result;
         
         if (TEST_MODE) {
-            // ТЕСТОВЫЙ РЕЖИМ - используем готовые полные данные
-            // console.log(`🎯 ТЕСТОВЫЙ РЕЖИМ: ${TEST_LAYOUT}`);
-            console.log(`🎯 ТЕСТОВЫЙ РЕЖИМ: ${TEST_LAYOUT}, статус: ${TEST_STATUS}`);
-            
-            result = {
-                success: true,
-                ...TEST_PROGRAMS[TEST_LAYOUT], // ← ВСЕ данные!
-                status: TEST_STATUS, // Переопределяем статус из тестового переключателя
-                programs: [],
-                source: 'test-mode'
-            };
-            
-            console.log('✅ Полные тестовые данные загружены из TEST_PROGRAMS');
-            console.log('📊 Тестовые данные:', {
-                layout: result.layout,
-                programCount: result.programCount,
-                clientCount: result.clientCount,
-                hasScheme: result.Scheme?.length > 0,
-                hasAllPrograms: result.allPrograms?.length > 0,
-                allProgramsCount: result.allPrograms?.length
-            });
+          // ТЕСТОВЫЙ РЕЖИМ
+          console.log(`🎯 ТЕСТОВЫЙ РЕЖИМ: ${TEST_LAYOUT}`);
+          result = {
+            success: true,
+            ...TEST_PROGRAMS[TEST_LAYOUT],
+            programs: []
+          };
+          
+          console.log('📊 Тестовые данные:', {
+            layout: result.layout,
+            programCount: result.programCount,
+            clientCount: result.clientCount,
+            hasScheme: result.Scheme?.length > 0,
+            hasAllPrograms: result.allPrograms?.length > 0,
+            allProgramsCount: result.allPrograms?.length
+          });
+          
         } else {
-            // РЕАЛЬНЫЙ РЕЖИМ - запрашиваем данные с API
-            console.log('🔄 РЕАЛЬНЫЙ РЕЖИМ: запрос данных с API');
-            console.log('📡 Конфигурация телевизора:', tvConfig);
-            
-            try {
-                // Передаем реальные настройки в API
-                result = await loadHitZoneLayout({
-                    // gym_id: tvConfig.gym_id,
-                    // televisor_id: tvConfig.televisor_id,
-                    // room_id: tvConfig.room_id
-                    useCacheAsFallback: true
-                });
-                
-                console.log('✅ Реальные данные получены:', {
-                    success: result?.success,
-                    layout: result?.layout,
-                    programCount: result?.programCount,
-                    clientCount: result?.clientCount,
-                    hasScheme: result?.Scheme?.length > 0,
-                    hasAllPrograms: result?.allPrograms?.length > 0
-                });
+          // РЕЖИМ РАБОТЫ С API
+          console.log('🔗 Режим работы с API');
+          result = await loadHitZoneLayout();
 
-                console.log('🔍 ДАННЫЕ ПЕРЕДАВАЕМЫЕ В TrainingStateProvider:', {
-                    layout: result.layout,
-                    source: result.source || 'unknown',
-                    schemeFirstRound: result.Scheme?.[0],
-                    schemeClients: result.Scheme?.[0]?.map(c => c.client_name),
-                    trainingInfo: result.trainingInfo,
-                    programCount: result.programCount
-                });
-                
-                if (!result || !result.success) {
-                    console.warn('⚠️ Реальные данные не получены, используем тестовые');
-                    result = {
-                        success: true,
-                        ...TEST_PROGRAMS['page1_1'], // fallback на тестовые
-                        programs: []
-                    };
-                }
-                
-            } catch (apiError) {
-                console.error('❌ Ошибка при загрузке реальных данных:', apiError);
-                // В случае ошибки - показываем тестовые данные
-                console.log('⚠️ Показываем тестовые данные из-за ошибки API');
-                result = {
-                    success: true,
-                    ...TEST_PROGRAMS['page1_1'], // fallback
-                    programs: []
-                };
-            }
+          console.log('🎯 SmartLayoutRouter: Результат от loadHitZoneLayout:', {
+            success: result.success,
+            layout: result.layout,
+            programCount: result.programCount,
+            clientCount: result.clientCount,
+            hasTrainingInfo: !!result.trainingInfo,
+            trainingName: result.trainingInfo?.name,
+            hasScheme: result.Scheme?.length > 0,
+            schemeLength: result.Scheme?.length,
+            hasClients: result.clients?.length > 0,
+            clientsCount: result.clients?.length,
+            hasAllPrograms: result.allPrograms?.length > 0
+          });
+
+          // Если есть реальные данные, покажи их
+          if (result.Scheme && result.Scheme.length > 0) {
+            console.log('🎯 Real Scheme data (first round):', result.Scheme[0]);
+          }
+          if (result.clients && result.clients.length > 0) {
+            console.log('🎯 Real Clients:', result.clients);
+          }
         }
         
         if (!result.success) {
@@ -417,78 +365,41 @@ function SmartLayoutRouter() {
           programCount: result.programCount,
           clientCount: result.clientCount,
           trainingName: result.trainingInfo?.name,
-          hasAllPrograms: result.allPrograms?.length > 0,
-          source: TEST_MODE ? 'test' : 'api'
+          hasAllPrograms: result.allPrograms?.length > 0
         });
 
         // Сохраняем данные для TrainingStateProvider
         setTrainingData(result);
 
-        // // Проверяем, нужно ли запускать тренировочный флоу
-        // // Если в данных есть Scheme и это HIT ZONE тренировка - запускаем флоу
-        // const shouldStartTrainingFlow = result.Scheme && result.Scheme.length > 0;
-        
-        // if (shouldStartTrainingFlow) {
-        //   console.log('🚀 Запускаем тренировочный флоу');
-        //   // НЕ делаем navigate, остаёмся на этой странице
-        //   // TrainingStateProvider + TrainingFlowRouter будут рендериться ниже
-        // } else {
-        //   // Если нет данных для тренировки - используем старую логику
-        //   console.log('📋 Используем старую логику (без тренировочного флоу)');
-        //   let targetPage = result.layout || TEST_LAYOUT;
-          
-        //   const validPages = ['page1', 'page1_1', 'page1_2', 'page1_3'];
-        //   if (!validPages.includes(targetPage)) {
-        //     console.warn(`⚠️ Страница ${targetPage} не найдена, используем page1_1`);
-        //     targetPage = 'page1_1';
-        //   }
-          
-        //   navigate(`/${targetPage}`, { 
-        //     state: { 
-        //       hitZoneData: result,
-        //       source: TEST_MODE ? 'smart-router-test' : 'smart-router-api',
-        //       testMode: TEST_MODE,
-        //       testLayout: TEST_LAYOUT,
-        //       skipLoading: true,
-        //       tvConfig: tvConfig
-        //     }
-        //   });
-        // }
-
         // Проверяем, нужно ли запускать тренировочный флоу
-        // ЕСЛИ В ДАННЫХ ЕСТЬ СТАТУС next/current/available - НЕ ДЕЛАЕМ РЕДИРЕКТ!
-        const shouldStartTrainingFlow = 
-            (result.Scheme && result.Scheme.length > 0) || 
-            result.status === 'current' || 
-            result.status === 'next' || 
-            result.status === 'available';
-
-            if (shouldStartTrainingFlow) {
-            console.log('🚀 Запускаем систему тренировок (статус:', result.status, ')');
-            // Сохраняем данные - они отобразятся в рендеринге ниже
-            setTrainingData(result);
-            // НЕ делаем navigate!
-            } else {
-            // Если нет данных для тренировки - используем старую логику
-            console.log('📋 Используем старую логику (без тренировочного флоу)');
-            let targetPage = result.layout || TEST_LAYOUT;
-            
-            const validPages = ['page1', 'page1_1', 'page1_2', 'page1_3'];
-            if (!validPages.includes(targetPage)) {
-                console.warn(`⚠️ Страница ${targetPage} не найдена, используем page1_1`);
-                targetPage = 'page1_1';
+        // Если в данных есть Scheme и это HIT ZONE тренировка - запускаем флоу
+        const shouldStartTrainingFlow = result.Scheme && result.Scheme.length > 0;
+        
+        if (shouldStartTrainingFlow) {
+          console.log('🚀 Запускаем тренировочный флоу');
+          // НЕ делаем navigate, остаёмся на этой странице
+          // TrainingStateProvider + TrainingFlowRouter будут рендериться ниже
+        } else {
+          // Если нет данных для тренировки - используем старую логику
+          console.log('📋 Используем старую логику (без тренировочного флоу)');
+          let targetPage = result.layout || TEST_LAYOUT;
+          
+          const validPages = ['page1', 'page1_1', 'page1_2', 'page1_3'];
+          if (!validPages.includes(targetPage)) {
+            console.warn(`⚠️ Страница ${targetPage} не найдена, используем page1_1`);
+            targetPage = 'page1_1';
+          }
+          
+          navigate(`/${targetPage}`, { 
+            state: { 
+              hitZoneData: result,
+              source: TEST_MODE ? 'smart-router-test' : 'smart-router-api',
+              testMode: TEST_MODE,
+              testLayout: TEST_LAYOUT,
+              skipLoading: true,
+              tvConfig: tvConfig
             }
-            
-            navigate(`/${targetPage}`, { 
-                state: { 
-                hitZoneData: result,
-                source: TEST_MODE ? 'smart-router-test' : 'smart-router-api',
-                testMode: TEST_MODE,
-                testLayout: TEST_LAYOUT,
-                skipLoading: true,
-                tvConfig: tvConfig
-                }
-            });
+          });
         }
 
       } catch (err) {
@@ -608,153 +519,19 @@ function SmartLayoutRouter() {
     );
   }
 
-//   // Если есть данные для тренировки - рендерим систему тренировок
-//   if (trainingData && trainingData.Scheme && trainingData.Scheme.length > 0) {
-//     console.log('🎯 Рендерим систему тренировок с данными:', {
-//       name: trainingData.trainingInfo?.name,
-//       schemeLength: trainingData.Scheme.length
-//     });
-    
-//     return (
-//       <TrainingStateProvider hitZoneData={trainingData}>
-//         <TrainingFlowRouter />
-//       </TrainingStateProvider>
-//     );
-//   }
-
-
-
-//   if (trainingData) {
-
-//     // ОБЕСПЕЧИВАЕМ, ЧТО status ВСЕГДА ЕСТЬ
-//     const status = trainingData.status || 'available';
-//     console.log('🎯 Статус тренировки:', status);
-
-//     console.log('🎯 Получены данные тренировки:', {
-//         status: trainingData.status,
-//         layout: trainingData.layout,
-//         hasScheme: trainingData.Scheme?.length > 0
-//     });
-
-//     // В зависимости от статуса рендерим разные компоненты
-//     switch (trainingData.status) {
-//         case 'current':
-//         // Текущая тренировка - запускаем тренировочный флоу
-//         if (trainingData.Scheme && trainingData.Scheme.length > 0) {
-//             console.log('🚀 Запускаем тренировочный флоу (текущая тренировка)');
-//             return (
-//             <TrainingStateProvider hitZoneData={trainingData}>
-//                 <TrainingFlowRouter />
-//             </TrainingStateProvider>
-//             );
-//         } else {
-//             console.log('⚠️ Текущая тренировка без Scheme, показываем следующую');
-//             return <NextTrainingDisplay trainingData={trainingData} />;
-//         }
-        
-//         case 'next':
-//         // Следующая тренировка - показываем обратный отсчёт
-//         console.log('⏭️ Показываем следующую тренировку с обратным отсчётом');
-//         return <NextTrainingDisplay trainingData={trainingData} />;
-        
-//         case 'no_trainings':
-//         // Нет тренировок
-//         console.log('📭 Нет тренировок на сегодня');
-//         return <NoTrainingsDisplay />;
-        
-//         case 'available':
-//         // Есть тренировка, но не по времени (запасной вариант)
-//         if (trainingData.Scheme && trainingData.Scheme.length > 0) {
-//             console.log('📋 Показываем доступную тренировку (не по времени)');
-//             return (
-//             <TrainingStateProvider hitZoneData={trainingData}>
-//                 <TrainingFlowRouter />
-//             </TrainingStateProvider>
-//             );
-//         } else {
-//             return <NoTrainingsDisplay />;
-//         }
-        
-//         default:
-//         console.warn(`Неизвестный статус: ${trainingData.status}`);
-//         return <NoTrainingsDisplay />;
-//     }
-//   }
-
-
-
-  // Вместо switch, сделаем более надёжную проверку:
-    if (trainingData) {
-        console.log('🎯 Получены данные тренировки:', {
-            status: trainingData.status,
-            layout: trainingData.layout,
-            hasScheme: trainingData.Scheme?.length > 0,
-            source: trainingData.source
+  // Если есть данные для тренировки - рендерим систему тренировок
+  if (trainingData && trainingData.Scheme && trainingData.Scheme.length > 0) {
+    console.log('🎯 Рендерим систему тренировок с данными:', {
+      name: trainingData.trainingInfo?.name,
+      schemeLength: trainingData.Scheme.length
     });
-
-    // Определяем статус с fallback
-    const status = trainingData.status || 
-                    (trainingData.Scheme?.length > 0 ? 'available' : 'no_trainings');
     
-    console.log(`🎯 Статус для отображения: ${status}`);
-    
-    // // Рендерим в зависимости от статуса
-    // if (status === 'current' && trainingData.Scheme?.length > 0) {
-    //     console.log('🚀 Запускаем тренировочный флоу (текущая тренировка)');
-    //     return (
-    //     <TrainingStateProvider hitZoneData={trainingData}>
-    //         <TrainingFlowRouter />
-    //     </TrainingStateProvider>
-    //     );
-    // }
-    
-    // if (status === 'next' || status === 'available') {
-    //     console.log('⏭️ Показываем следующую/доступную тренировку');
-    //     return <NextTrainingDisplay trainingData={trainingData} />;
-    // }
-    
-    // if (status === 'no_trainings') {
-    //     console.log('📭 Нет тренировок на сегодня');
-    //     return <NoTrainingsDisplay />;
-    // }
-
-    
-    // Рендерим в зависимости от статуса
-    switch (status) {
-        case 'current':
-            // Текущая тренировка
-            if (trainingData.Scheme?.length > 0) {
-            console.log('🚀 Текущая тренировка со Scheme - запускаем флоу');
-            return (
-                <TrainingStateProvider hitZoneData={trainingData}>
-                <TrainingFlowRouter />
-                </TrainingStateProvider>
-            );
-            } else {
-            console.log('⏰ Текущая тренировка без Scheme - показываем как активную');
-            return <NextTrainingDisplay trainingData={trainingData} />;
-            }
-            
-        case 'next':
-        case 'available':
-            // Следующая или доступная тренировка
-            console.log(`⏭️ ${status === 'next' ? 'Следующая' : 'Доступная'} тренировка`);
-            return <NextTrainingDisplay trainingData={trainingData} />;
-            
-        case 'no_trainings':
-            // Нет тренировок
-            console.log('📭 Нет тренировок на сегодня');
-            return <NoTrainingsDisplay />;
-            
-        default:
-            console.warn(`⚠️ Неизвестный статус: ${status}, показываем NoTrainings`);
-            return <NoTrainingsDisplay />;
-    }
-    
-    // Fallback на случай ошибки
-    console.warn(`⚠️ Неизвестный статус: ${status}, показываем NoTrainings`);
-    return <NoTrainingsDisplay />;
-    }
+    return (
+      <TrainingStateProvider hitZoneData={trainingData}>
+        <TrainingFlowRouter />
+      </TrainingStateProvider>
+    );
+  }
 
   // Если нет данных для тренировки, но данные загружены успешно
   // (например, для страниц без Scheme)

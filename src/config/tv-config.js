@@ -1,90 +1,64 @@
-// src/config/tv-config.js - ТОЛЬКО HIT ZONE
-
+// src/config/tv-config.js
 /**
- * Конфигурация 4 телевизоров для HIT ZONE
+ * Дефолтные настройки (если телевизор не настроен)
  */
-const HIT_ZONE_TV_CONFIGS = {
-  // ================== HIT ZONE ==================
-  // Комната: 8b550c93-cf91-11f0-92a9-005056015d0b
-  // 4 больших телевизора
-  
-  // TV 1 (Big) - page1.jsx
-  'hit-tv-1': {
-    gym_id: 1,
-    room_id: '8b550c93-cf91-11f0-92a9-005056015d0b', // HIT ZONE
-    televisor_id: 9, // Из данных API
-    tv_name: 'HIT Zone TV 1',
-    stationIds: [1, 23], // station_id для 1A и 1B
-    stationNumbers: ['1A', '1B'],
-    component: 'page1'
-  },
-  
-  // TV 2 (Big) - page1_1.jsx
-  'hit-tv-2': {
-    gym_id: 1,
-    room_id: '8b550c93-cf91-11f0-92a9-005056015d0b',
-    televisor_id: 9, // Из данных API
-    tv_name: 'HIT Zone TV 2',
-    stationIds: [2, 30], // station_id для 2A и 2B
-    stationNumbers: ['2A', '2B'],
-    component: 'page1_1'
-  },
-  
-  // TV 3 (Big) - page2.jsx
-  'hit-tv-3': {
-    gym_id: 1,
-    room_id: '8b550c93-cf91-11f0-92a9-005056015d0b',
-    televisor_id: 9, // Из данных API
-    tv_name: 'HIT Zone TV 3',
-    stationIds: [3, 19], // station_id для 3A и 3B
-    stationNumbers: ['3A', '3B'],
-    component: 'page2'
-  },
-  
-  // TV 4 (Big) - page2_1.jsx
-  'hit-tv-4': {
-    gym_id: 1,
-    room_id: '8b550c93-cf91-11f0-92a9-005056015d0b',
-    televisor_id: 9, // Из данных API
-    tv_name: 'HIT Zone TV 4',
-    stationIds: [4, 20], // station_id для 4A и 4B
-    stationNumbers: ['4A', '4B'],
-    component: 'page2_1'
-  }
+export const DEFAULT_TV_CONFIG = {
+  gym_id: 1,
+  room_id: '8b550c93-cf91-11f0-92a9-005056015d0b', // HIT ZONE по умолчанию
+  televisor_id: 1,
+  tv_name: 'Не настроен',
+  requires_setup: true
 };
 
 /**
  * Получает конфигурацию телевизора
+ * 1. Сначала проверяет localStorage
+ * 2. Если нет — возвращает дефолтную
  */
-export function getTVConfig(tvId = null) {
-  // 1. Получаем tvId из URL параметра
-  const urlParams = new URLSearchParams(window.location.search);
-  const tvIdFromUrl = tvId || urlParams.get('tv_id') || 'hit-tv-1';
+export function getTVConfig() {
+  const savedConfig = localStorage.getItem('tvConfig');
   
-  // 2. Ищем конфигурацию
-  const config = HIT_ZONE_TV_CONFIGS[tvIdFromUrl];
-  
-  if (config) {
-    console.log(`✅ HIT ZONE телевизор настроен: ${tvIdFromUrl}`, {
-      televisor_id: config.televisor_id,
-      room_id: config.room_id,
-      stationIds: config.stationIds
-    });
-    return config;
+  if (savedConfig) {
+    try {
+      const config = JSON.parse(savedConfig);
+      console.log('✅ Используем сохраненную конфигурацию телевизора');
+      return {
+        ...DEFAULT_TV_CONFIG,
+        ...config, // Переопределяем сохраненными значениями
+        requires_setup: false
+      };
+    } catch (error) {
+      console.error('❌ Ошибка парсинга сохраненной конфигурации:', error);
+    }
   }
   
-  // 3. Дефолтный конфиг
-  console.warn(`⚠️ Конфигурация для tv_id="${tvIdFromUrl}" не найдена! Используем hit-tv-1`);
-  return HIT_ZONE_TV_CONFIGS['hit-tv-1'];
+  console.warn('⚠️ Телевизор не настроен, используем дефолтную конфигурацию');
+  return DEFAULT_TV_CONFIG;
 }
 
 /**
- * Получает конфигурацию по имени компонента
+ * Сохраняет конфигурацию телевизора
  */
-export function getConfigByComponentName(componentName) {
-  return Object.values(HIT_ZONE_TV_CONFIGS).find(config => 
-    config.component === componentName
-  ) || HIT_ZONE_TV_CONFIGS['hit-tv-1'];
+export function saveTVConfig(config) {
+  try {
+    const fullConfig = {
+      ...config,
+      last_updated: new Date().toISOString()
+    };
+    
+    localStorage.setItem('tvConfig', JSON.stringify(fullConfig));
+    console.log('💾 Конфигурация телевизора сохранена:', fullConfig);
+    return true;
+  } catch (error) {
+    console.error('❌ Ошибка сохранения конфигурации:', error);
+    return false;
+  }
 }
 
-export default HIT_ZONE_TV_CONFIGS;
+/**
+ * Проверяет, настроен ли телевизор
+ */
+export function isTVConfigured() {
+  const config = getTVConfig();
+  return !config.requires_setup;
+}
