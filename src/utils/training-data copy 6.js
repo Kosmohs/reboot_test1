@@ -18,6 +18,16 @@ export function cacheHitZoneData(data) {
         schemeLength: data?.Scheme?.length
     });
     
+//   try {
+//     const cacheData = {
+//       data: data,
+//       timestamp: Date.now()
+//     };
+//     localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
+//     console.log('✅ Данные сохранены в кэш');
+//   } catch (error) {
+//     console.warn('⚠️ Не удалось сохранить в кэш:', error);
+//   }
 
   try {
     const cacheData = {
@@ -37,6 +47,27 @@ export function cacheHitZoneData(data) {
   }
 }
 
+// export function getCachedHitZoneData() {
+//   try {
+//     const cached = localStorage.getItem(CACHE_KEY);
+//     if (!cached) return null;
+    
+//     const { data, timestamp } = JSON.parse(cached);
+    
+//     // Проверяем не устарели ли данные
+//     if (Date.now() - timestamp > CACHE_DURATION) {
+//       console.log('⚠️ Данные в кэше устарели');
+//       localStorage.removeItem(CACHE_KEY);
+//       return null;
+//     }
+    
+//     console.log('✅ Использую данные из кэша');
+//     return data;
+//   } catch (error) {
+//     console.warn('⚠️ Ошибка чтения кэша:', error);
+//     return null;
+//   }
+// }
 
 
 export function getCachedHitZoneData() {
@@ -53,6 +84,21 @@ export function getCachedHitZoneData() {
   
   console.log('   Размер данных:', cachedStr.length, 'байт');
   
+//   try {
+//     const { data, timestamp } = JSON.parse(cachedStr);
+//     console.log('   ✅ Кэш распарсен успешно');
+//     console.log('   Время создания:', new Date(timestamp).toLocaleTimeString());
+//     console.log('   Данные:', {
+//       success: data?.success,
+//       layout: data?.layout
+//     });
+    
+//     return data;
+//   } catch (error) {
+//     console.error('   ❌ Ошибка парсинга кэша:', error);
+//     console.log('   Сырые данные (первые 200 символов):', cachedStr.substring(0, 200));
+//     return null;
+//   }
 
   try {
     const cacheData = JSON.parse(cachedStr);
@@ -110,15 +156,14 @@ export function parseHitZoneData(apiResponse) {
   if (!mainTraining) {
     console.log('parseHitZoneData: Нет данных для тренировки');
     return {
-    //   success: false,
-      success: true,
-      status: 'no_trainings',
+      success: false,
       error: apiResponse?.error || 'Нет данных',
+      status: 'no_trainings',
       layout: 'page1_1',
-      programCount: 0,
+      programCount: 1,
       clientCount: 0,
       trainingInfo: {
-        name: 'GYM ZONE',
+        name: 'HIT ZONE',
         trainer: 'Тренер',
         round: 1,
         totalRounds: 16,
@@ -251,6 +296,66 @@ export function parseHitZoneData(apiResponse) {
 }
 
 
+// export async function loadHitZoneLayout() {
+
+//     console.log('🔍 [1] loadHitZoneLayout вызван');
+  
+//     // Сначала проверим кэш
+//     console.log('🔍 [2] Проверяю кэш...');
+//     const cached = getCachedHitZoneData();
+
+//     if (cached) {
+//         console.log('✅ [3] Использую кэшированные данные');
+//         return cached;
+//     }
+    
+//     console.log('🔄 [4] Кэша нет, запрашиваю API...');
+   
+//     console.log('🔍 loadHitZoneLayout: проверка кэша...');
+  
+//   // 1. Пробуем получить данные из кэша
+//   const cachedData = getCachedHitZoneData();
+//   if (cachedData) {
+//     console.log('📦 Использую кэшированные данные');
+//     return cachedData;
+//   }
+  
+//   console.log('🔄 Кэш пустой, запрашиваю новые данные...');
+
+//   // 2. Запрашиваем новые данные
+//   try {
+//     console.log('loadHitZoneLayout: запуск...');
+//     const apiResponse = await fetchTrainings();
+//     console.log('loadHitZoneLayout: API ответ получен');
+    
+//     const result = parseHitZoneData(apiResponse);
+//     console.log('loadHitZoneLayout: результат сформирован');
+    
+//     return result;
+//   } catch (error) {
+//     console.error('❌ Ошибка loadHitZoneLayout:', error);
+//     return {
+//       success: false,
+//       error: error.message,
+//       layout: 'page1_1',
+//       programCount: 1,
+//       clientCount: 0,
+//       trainingInfo: {
+//         name: 'HIT ZONE (Ошибка)',
+//         trainer: 'Тренер',
+//         round: 1,
+//         totalRounds: 16,
+//         currentApproach: 1
+//       },
+//       programData: {},
+//       clients: [],
+//       Scheme: [],
+//       allPrograms: []
+//     };
+//   }
+// }
+
+
 
 const getTestData = () => {
   console.log('🧪 Возвращаем тестовые данные');
@@ -286,11 +391,131 @@ const getTestData = () => {
 };
 
 
+// src/utils/training-data.js
+// export const loadHitZoneLayout = async (tvConfig = null) => {
+//   try {
+//     // Если передан конфиг телевизора - используем его
+//     const config = tvConfig || getSavedTVConfig();
+    
+//     console.log('🚀 Запрос данных тренировки для:', config);
+    
+//     // В тестовом режиме возвращаем тестовые данные
+//     // if (process.env.NODE_ENV === 'development' || TEST_MODE) {
+//     //   return getTestData();
+//     // }
+//     if (TEST_MODE) {
+//         console.log('🎯 ТЕСТОВЫЙ РЕЖИМ: возвращаем тестовые данные');
+//         return getTestData();
+//     }
+    
+//     // Реальный запрос к API
+//     const response = await fetch(`${baseApiUrl}/site/trainings`, {
+//       method: 'GET',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({
+//         gym_id: config.gym_id,
+//         televisor_id: config.televisor_id,
+//         room_id: config.room_id
+//       })
+//     });
+    
+//     const data = await response.json();
+//     // ... обработка ответа
+    
+//   } catch (error) {
+//     console.error('❌ Ошибка загрузки данных:', error);
+//     return {
+//       success: false,
+//       error: error.message
+//     };
+//   }
+// };
+
+
+
+
+
+// CHECKING CASH FIRST!!!
+// export async function loadHitZoneLayout() {
+//   console.log('🔍 [1] loadHitZoneLayout ВХОД');
+  
+//   try {
+//     // 2. Проверка кэша
+//     console.log('🔍 [2] Проверка кэша...');
+//     const cached = getCachedHitZoneData();
+    
+//     if (cached) {
+//       console.log('✅ [3] Возвращаю кэшированные данные');
+//       return cached;
+//     }
+    
+//     // 4. Запрос к API через fetchTrainings() - ОНА РАБОТАЕТ!
+//     console.log('🔄 [4] Запрос fetchTrainings()...');
+//     const apiResponse = await fetchTrainings();
+//     console.log('📥 [5] fetchTrainings() вернул:', {
+//       success: apiResponse?.success,
+//       hasData: !!apiResponse?.data,
+//       hasScheme: !!apiResponse?.data?.Scheme
+//     });
+    
+//     if (!apiResponse?.success) {
+//       console.error('❌ [5.1] API success = false');
+//       throw new Error('API response not successful');
+//     }
+    
+//     // 5. Парсинг
+//     console.log('🔄 [6] Вызов parseHitZoneData()...');
+//     let parsedData;
+//     try {
+//       parsedData = parseHitZoneData(apiResponse);
+//       console.log('✅ [6.1] parseHitZoneData выполнена');
+//     } catch (parseError) {
+//       console.error('❌ [6.2] Ошибка в parseHitZoneData:', parseError);
+//       throw parseError;
+//     }
+    
+//     console.log('🎯 [7] Данные распарсены:', {
+//       success: parsedData.success,
+//       layout: parsedData.layout,
+//       clientCount: parsedData.clientCount
+//     });
+    
+//     // 6. Сохранение в кэш
+//     console.log('💾 [8] Вызов cacheHitZoneData()...');
+//     try {
+//       cacheHitZoneData(parsedData);
+//       console.log('✅ [8.1] cacheHitZoneData вызвана');
+//     } catch (cacheError) {
+//       console.error('❌ [8.2] Ошибка в cacheHitZoneData:', cacheError);
+//       // Не прерываем цепочку, даже если кэширование не удалось
+//     }
+    
+//     // 7. Возврат
+//     console.log('✅ [9] Возвращаю данные');
+//     return parsedData;
+    
+//   } catch (error) {
+//     console.error('❌ [ERROR] Ошибка в loadHitZoneLayout:', error);
+//     console.error('Stack:', error.stack);
+//     throw error;
+//   }
+// }
+
+
 
 export async function loadHitZoneLayout(options = {}) {
   const { useCacheAsFallback = true } = options;
   
   console.log('🔍 [1] loadHitZoneLayout ВХОД', { useCacheAsFallback });
+
+//   console.log('🆔 Ищем тренировки для room_id:', tvConfig.room_id);
+//     console.log('📋 По конфигурации это должен быть:', 
+//     tvConfig.room_id === '71a5eec2-a066-11f0-9298-005056015d0b' ? 'GYM ZONE' : 
+//     tvConfig.room_id === '8b550c93-cf91-11f0-92a9-005056015d0b' ? 'HIT ZONE' : 
+//     'Неизвестная зона'
+//   );
   
   try {
     // 1. СНАЧАЛА ПРОБУЕМ API

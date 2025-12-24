@@ -127,9 +127,9 @@ export function getTrainingIdsFromScheme(scheme, round = 1) {
 /**
  * Получает программу по умолчанию для отображения
  */
-export function getDefaultProgram(hitZoneData) {
-  if (hitZoneData.allPrograms && hitZoneData.allPrograms.length > 0) {
-    const program = hitZoneData.allPrograms[0];
+export function getDefaultProgram(gymZoneData) {
+  if (gymZoneData.allPrograms && gymZoneData.allPrograms.length > 0) {
+    const program = gymZoneData.allPrograms[0];
     return {
       id: program.id,
       name: program.name,
@@ -138,11 +138,11 @@ export function getDefaultProgram(hitZoneData) {
     };
   }
   
-  if (hitZoneData.Scheme && hitZoneData.Scheme.length > 0) {
-    const trainingIds = getTrainingIdsFromScheme(hitZoneData.Scheme, 1);
+  if (gymZoneData.Scheme && gymZoneData.Scheme.length > 0) {
+    const trainingIds = getTrainingIdsFromScheme(gymZoneData.Scheme, 1);
     
     if (trainingIds.length > 0) {
-      const firstRound = hitZoneData.Scheme[0];
+      const firstRound = gymZoneData.Scheme[0];
       const frequency = {};
       
       firstRound.forEach(item => {
@@ -175,45 +175,45 @@ export function getDefaultProgram(hitZoneData) {
 /**
  * Получает информацию о тренировке
  */
-export function getTrainingInfo(hitZoneData) {
+export function getTrainingInfo(gymZoneData) {
     console.log('🔍 getTrainingInfo ВХОД:', {
-    trainingInfo: hitZoneData.trainingInfo,
-    hasTrainingInfo: !!hitZoneData.trainingInfo,
-    trainingInfoKeys: hitZoneData.trainingInfo ? Object.keys(hitZoneData.trainingInfo) : []
+    trainingInfo: gymZoneData.trainingInfo,
+    hasTrainingInfo: !!gymZoneData.trainingInfo,
+    trainingInfoKeys: gymZoneData.trainingInfo ? Object.keys(gymZoneData.trainingInfo) : []
   });
 
   const result = {
-    name: hitZoneData.trainingInfo?.name || 'Тренировка',
-    trainer: hitZoneData.trainingInfo?.trainer || 'Тренер',
-    round: hitZoneData.trainingInfo?.round || 1,
-    totalRounds: hitZoneData.trainingInfo?.totalRounds || 16,
-    currentApproach: hitZoneData.trainingInfo?.currentApproach || 1,
-    time: hitZoneData.trainingInfo?.time || '16:00'
+    name: gymZoneData.trainingInfo?.name || 'Тренировка',
+    trainer: gymZoneData.trainingInfo?.trainer || 'Тренер',
+    round: gymZoneData.trainingInfo?.round || 1,
+    totalRounds: gymZoneData.trainingInfo?.totalRounds || 16,
+    currentApproach: gymZoneData.trainingInfo?.currentApproach || 1,
+    time: gymZoneData.trainingInfo?.time || '16:00'
   };
   
   console.log('🔍 getTrainingInfo ВЫХОД:', result);
-  console.log('   round source:', hitZoneData.trainingInfo?.round, '→ using:', result.round);
+  console.log('   round source:', gymZoneData.trainingInfo?.round, '→ using:', result.round);
 
   return {
-    name: hitZoneData.trainingInfo?.name || 'Тренировка',
-    trainer: hitZoneData.trainingInfo?.trainer || 'Тренер',
-    round: hitZoneData.trainingInfo?.round || 1,
-    totalRounds: hitZoneData.trainingInfo?.totalRounds || 16,
-    currentApproach: hitZoneData.trainingInfo?.currentApproach || 1,
-    time: hitZoneData.trainingInfo?.time || '16:00'
+    name: gymZoneData.trainingInfo?.name || 'Тренировка',
+    trainer: gymZoneData.trainingInfo?.trainer || 'Тренер',
+    round: gymZoneData.trainingInfo?.round || 1,
+    totalRounds: gymZoneData.trainingInfo?.totalRounds || 16,
+    currentApproach: gymZoneData.trainingInfo?.currentApproach || 1,
+    time: gymZoneData.trainingInfo?.time || '16:00'
   };
 }
 
 /**
  * Получает данные для конкретной страницы
  */
-export function getPageData(pageType, hitZoneData) {
-  const baseInfo = getTrainingInfo(hitZoneData);
-  const program = getDefaultProgram(hitZoneData);
+export function getPageData(pageType, gymZoneData) {
+  const baseInfo = getTrainingInfo(gymZoneData);
+  const program = getDefaultProgram(gymZoneData);
 
   console.log('🔍 getPageData DEBUG:');
   console.log('- pageType:', pageType);
-  console.log('- hitZoneData.trainingInfo:', hitZoneData.trainingInfo);
+  console.log('- gymZoneData.trainingInfo:', gymZoneData.trainingInfo);
   console.log('- baseInfo.round:', baseInfo.round); // ← ЧТО ТУТ?
   console.log('- program.training_id:', program.training_id);
 
@@ -240,16 +240,16 @@ export function getPageData(pageType, hitZoneData) {
       break;
       
     case 'page1_3':
-      const trainingIds = getTrainingIdsFromScheme(hitZoneData.Scheme, 1);
+      const trainingIds = getTrainingIdsFromScheme(gymZoneData.Scheme, 1);
       const programsData = trainingIds.slice(0, 2).map((trainingId, index) => {
-        const clients = getClientsFromScheme(hitZoneData.Scheme, {
+        const clients = getClientsFromScheme(gymZoneData.Scheme, {
           trainingId,
           round: baseInfo.round,
           uniqueOnly: true,
           sortBy: 'order'
         });
         
-        const firstItem = hitZoneData.Scheme[0]?.find(item => item.training_id === trainingId);
+        const firstItem = gymZoneData.Scheme[0]?.find(item => item.training_id === trainingId);
         
         return {
           id: `program_${index + 1}`,
@@ -267,16 +267,16 @@ export function getPageData(pageType, hitZoneData) {
       };
       
     case 'page1':
-      const allTrainingIds = getTrainingIdsFromScheme(hitZoneData.Scheme, 1);
+      const allTrainingIds = getTrainingIdsFromScheme(gymZoneData.Scheme, 1);
       const threePrograms = allTrainingIds.slice(0, 3).map((trainingId, index) => {
-        const clients = getClientsFromScheme(hitZoneData.Scheme, {
+        const clients = getClientsFromScheme(gymZoneData.Scheme, {
           trainingId,
           round: baseInfo.round,
           uniqueOnly: true,
           sortBy: 'order'
         });
         
-        const firstItem = hitZoneData.Scheme[0]?.find(item => item.training_id === trainingId);
+        const firstItem = gymZoneData.Scheme[0]?.find(item => item.training_id === trainingId);
         
         return {
           id: `program_${index + 1}`,
@@ -302,7 +302,7 @@ export function getPageData(pageType, hitZoneData) {
       };
   }
   
-  const clients = getClientsFromScheme(hitZoneData.Scheme, options);
+  const clients = getClientsFromScheme(gymZoneData.Scheme, options);
   
   return {
     ...baseInfo,

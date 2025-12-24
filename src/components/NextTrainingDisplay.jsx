@@ -199,19 +199,31 @@ function NextTrainingDisplay({ trainingData }) {
       </div>
     );
   }
-
+  
   const { trainingInfo, programData } = nextTraining;
   const isStartingSoon = parseInt(timeLeft.hours) === 0 && parseInt(timeLeft.minutes) < 5;
 
-  // В JSX компонента, перед return, добавим отладку:
-    console.log('🔍 NextTrainingDisplay данные:', {
-        hasTraining: !!nextTraining,
-        time: nextTraining?.trainingInfo?.time,
-        endTime: nextTraining?.trainingInfo?.endTime,
-        parsedTime: nextTraining?.trainingInfo?.time ? new Date(nextTraining.trainingInfo.time) : 'нет',
-        now: new Date(),
-        timeLeft: timeLeft
-    });
+  // HTML cleaner
+    const cleanHtml = (html) => {
+        if (!html) return '';
+        
+        return html
+            .replace(/<[^>]*>/g, ' ')    // Удаляем все HTML-теги
+            .replace(/&nbsp;/g, ' ')     // Заменяем неразрывные пробелы
+            .replace(/\s\s+/g, ' ')      // Убираем множественные пробелы
+            .trim();                     // Обрезаем пробелы по краям
+    };
+
+//   // В JSX компонента, перед return, добавим отладку:
+//     console.log('🔍 NextTrainingDisplay данные:', {
+//         hasTraining: !!nextTraining,
+//         time: nextTraining?.trainingInfo?.time,
+//         endTime: nextTraining?.trainingInfo?.endTime,
+//         parsedTime: nextTraining?.trainingInfo?.time ? new Date(nextTraining.trainingInfo.time) : 'нет',
+//         now: new Date(),
+//         timeLeft: timeLeft
+//     });
+
 
   return (
     <div className="next-training-container">
@@ -259,7 +271,8 @@ function NextTrainingDisplay({ trainingData }) {
           {programData.description && (
             <div className="detail-row">
               <span className="detail-label">Описание:</span>
-              <span className="detail-value">{programData.description}</span>
+              {/* <span className="detail-value">{programData.description}</span> */}
+              <span className="detail-value">{cleanHtml(programData.description)}</span>
             </div>
           )}
           {nextTraining.clientCount > 0 && (
@@ -306,13 +319,15 @@ const styles = `
   .next-training-container {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start; /* Изменил с center на flex-start */
     overflow-y: auto;
     height: 100%;
+    
     background: linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #1a1a1a 100%);
     color: #ffffff;
     font-family: 'Segoe UI', 'Arial', sans-serif;
     padding: 20px;
+    box-sizing: border-box; /* Чтобы padding не увеличивал высоту */
   }
 
   .next-training-content {
@@ -329,8 +344,11 @@ const styles = `
     border: 1px solid rgba(255, 102, 0, 0.15);
     position: relative;
     overflow: hidden;
+    margin-top: 20px; /* Отступ сверху */
+    margin-bottom: 20px; /* Отступ снизу */
   }
 
+  /* Остальные стили остаются без изменений */
   .next-training-content::before {
     content: '';
     position: absolute;
@@ -671,9 +689,16 @@ const styles = `
   }
 
   @media (max-width: 768px) {
+    .next-training-container {
+      height: 100vh; /* На мобильных переходим на полную высоту */
+      min-height: 100vh;
+      max-height: 100vh;
+      padding: 10px;
+    }
+    
     .next-training-content {
       padding: 30px 20px;
-      margin: 10px;
+      margin: 10px 0;
     }
     
     .training-title {

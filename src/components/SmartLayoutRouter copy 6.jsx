@@ -167,7 +167,7 @@ const TEST_PROGRAMS = {
     ],
     programData: {
       title: 'HIT ZONE (Тест 2 программы)',
-      description: 'Spartan Sweat — ',
+      description: 'Две параллельные программы',
       color: '#00FF00'
     }
   },
@@ -302,10 +302,10 @@ function SmartLayoutRouter() {
   const [trainingData, setTrainingData] = useState(null);
   
   // ТЕСТОВЫЙ РЕЖИМ
-  const TEST_STATUS = 'next'; // Меняй тут для теста: 'current', 'next', 'no_trainings', 'available'
+  const TEST_STATUS = 'no_trainings'; // Меняй тут для теста: 'current', 'next', 'no_trainings', 'available'
   
   const TEST_MODE = false; // ← true = тестовый режим, false = работа с API
-  const TEST_LAYOUT = 'page1_3'; // ← МЕНЯЙ ЗДЕСЬ для теста
+  const TEST_LAYOUT = 'page1_1'; // ← МЕНЯЙ ЗДЕСЬ для теста
 
     // '3-programs'       -> Page1                  current
     // '2-programs'       -> Page1_3                next
@@ -390,13 +390,11 @@ function SmartLayoutRouter() {
                 
                 if (!result || !result.success) {
                     console.warn('⚠️ Реальные данные не получены, используем тестовые');
-                    if (result?.status !== 'no_trainings') {  // Только если не статус "нет тренировок"
-                        result = {
-                            success: true,
-                            ...TEST_PROGRAMS['page1_1'],
-                            programs: []
-                        };
-                    }
+                    result = {
+                        success: true,
+                        ...TEST_PROGRAMS['page1_1'], // fallback на тестовые
+                        programs: []
+                    };
                 }
                 
             } catch (apiError) {
@@ -409,13 +407,6 @@ function SmartLayoutRouter() {
                     programs: []
                 };
             }
-        }
-
-        if (result?.status === 'no_trainings') {
-            // Для статуса no_trainings НИКОГДА не делаем навигацию
-            console.log('📭 Статус no_trainings - остаемся на текущем роуте');
-            setTrainingData(result);
-            return; // ← ВАЖНО: выходим из функции!
         }
         
         if (!result.success) {
@@ -434,7 +425,36 @@ function SmartLayoutRouter() {
         // Сохраняем данные для TrainingStateProvider
         setTrainingData(result);
 
+        // // Проверяем, нужно ли запускать тренировочный флоу
+        // // Если в данных есть Scheme и это HIT ZONE тренировка - запускаем флоу
+        // const shouldStartTrainingFlow = result.Scheme && result.Scheme.length > 0;
         
+        // if (shouldStartTrainingFlow) {
+        //   console.log('🚀 Запускаем тренировочный флоу');
+        //   // НЕ делаем navigate, остаёмся на этой странице
+        //   // TrainingStateProvider + TrainingFlowRouter будут рендериться ниже
+        // } else {
+        //   // Если нет данных для тренировки - используем старую логику
+        //   console.log('📋 Используем старую логику (без тренировочного флоу)');
+        //   let targetPage = result.layout || TEST_LAYOUT;
+          
+        //   const validPages = ['page1', 'page1_1', 'page1_2', 'page1_3'];
+        //   if (!validPages.includes(targetPage)) {
+        //     console.warn(`⚠️ Страница ${targetPage} не найдена, используем page1_1`);
+        //     targetPage = 'page1_1';
+        //   }
+          
+        //   navigate(`/${targetPage}`, { 
+        //     state: { 
+        //       hitZoneData: result,
+        //       source: TEST_MODE ? 'smart-router-test' : 'smart-router-api',
+        //       testMode: TEST_MODE,
+        //       testLayout: TEST_LAYOUT,
+        //       skipLoading: true,
+        //       tvConfig: tvConfig
+        //     }
+        //   });
+        // }
 
         // Проверяем, нужно ли запускать тренировочный флоу
         // ЕСЛИ В ДАННЫХ ЕСТЬ СТАТУС next/current/available - НЕ ДЕЛАЕМ РЕДИРЕКТ!
@@ -443,14 +463,13 @@ function SmartLayoutRouter() {
             result.status === 'current' || 
             result.status === 'next' || 
             result.status === 'available';
-            result.status === 'no_trainings';
 
-        if (shouldStartTrainingFlow) {
+            if (shouldStartTrainingFlow) {
             console.log('🚀 Запускаем систему тренировок (статус:', result.status, ')');
             // Сохраняем данные - они отобразятся в рендеринге ниже
             setTrainingData(result);
             // НЕ делаем navigate!
-        } else {
+            } else {
             // Если нет данных для тренировки - используем старую логику
             console.log('📋 Используем старую логику (без тренировочного флоу)');
             let targetPage = result.layout || TEST_LAYOUT;
@@ -590,10 +609,78 @@ function SmartLayoutRouter() {
     );
   }
 
-  if (trainingData?.status === 'no_trainings') {
-    console.log('📭 Статус no_trainings - показываю NoTrainingsDisplay');
-    return <NoTrainingsDisplay />;
-  }
+//   // Если есть данные для тренировки - рендерим систему тренировок
+//   if (trainingData && trainingData.Scheme && trainingData.Scheme.length > 0) {
+//     console.log('🎯 Рендерим систему тренировок с данными:', {
+//       name: trainingData.trainingInfo?.name,
+//       schemeLength: trainingData.Scheme.length
+//     });
+    
+//     return (
+//       <TrainingStateProvider hitZoneData={trainingData}>
+//         <TrainingFlowRouter />
+//       </TrainingStateProvider>
+//     );
+//   }
+
+
+
+//   if (trainingData) {
+
+//     // ОБЕСПЕЧИВАЕМ, ЧТО status ВСЕГДА ЕСТЬ
+//     const status = trainingData.status || 'available';
+//     console.log('🎯 Статус тренировки:', status);
+
+//     console.log('🎯 Получены данные тренировки:', {
+//         status: trainingData.status,
+//         layout: trainingData.layout,
+//         hasScheme: trainingData.Scheme?.length > 0
+//     });
+
+//     // В зависимости от статуса рендерим разные компоненты
+//     switch (trainingData.status) {
+//         case 'current':
+//         // Текущая тренировка - запускаем тренировочный флоу
+//         if (trainingData.Scheme && trainingData.Scheme.length > 0) {
+//             console.log('🚀 Запускаем тренировочный флоу (текущая тренировка)');
+//             return (
+//             <TrainingStateProvider hitZoneData={trainingData}>
+//                 <TrainingFlowRouter />
+//             </TrainingStateProvider>
+//             );
+//         } else {
+//             console.log('⚠️ Текущая тренировка без Scheme, показываем следующую');
+//             return <NextTrainingDisplay trainingData={trainingData} />;
+//         }
+        
+//         case 'next':
+//         // Следующая тренировка - показываем обратный отсчёт
+//         console.log('⏭️ Показываем следующую тренировку с обратным отсчётом');
+//         return <NextTrainingDisplay trainingData={trainingData} />;
+        
+//         case 'no_trainings':
+//         // Нет тренировок
+//         console.log('📭 Нет тренировок на сегодня');
+//         return <NoTrainingsDisplay />;
+        
+//         case 'available':
+//         // Есть тренировка, но не по времени (запасной вариант)
+//         if (trainingData.Scheme && trainingData.Scheme.length > 0) {
+//             console.log('📋 Показываем доступную тренировку (не по времени)');
+//             return (
+//             <TrainingStateProvider hitZoneData={trainingData}>
+//                 <TrainingFlowRouter />
+//             </TrainingStateProvider>
+//             );
+//         } else {
+//             return <NoTrainingsDisplay />;
+//         }
+        
+//         default:
+//         console.warn(`Неизвестный статус: ${trainingData.status}`);
+//         return <NoTrainingsDisplay />;
+//     }
+//   }
 
 
 
@@ -612,7 +699,26 @@ function SmartLayoutRouter() {
     
     console.log(`🎯 Статус для отображения: ${status}`);
     
+    // // Рендерим в зависимости от статуса
+    // if (status === 'current' && trainingData.Scheme?.length > 0) {
+    //     console.log('🚀 Запускаем тренировочный флоу (текущая тренировка)');
+    //     return (
+    //     <TrainingStateProvider hitZoneData={trainingData}>
+    //         <TrainingFlowRouter />
+    //     </TrainingStateProvider>
+    //     );
+    // }
     
+    // if (status === 'next' || status === 'available') {
+    //     console.log('⏭️ Показываем следующую/доступную тренировку');
+    //     return <NextTrainingDisplay trainingData={trainingData} />;
+    // }
+    
+    // if (status === 'no_trainings') {
+    //     console.log('📭 Нет тренировок на сегодня');
+    //     return <NoTrainingsDisplay />;
+    // }
+
 
     // Рендерим в зависимости от статуса
     switch (status) {

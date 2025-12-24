@@ -165,12 +165,13 @@ const styles = `
     display: flex;
     justify-content: center;
     align-items: flex-start; /* Изменено для скролла */
-    min-height: 100vh; /* Изменено на min-height */
+    height: 100%;
     background: linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #1a1a1a 100%);
     color: #ffffff;
     font-family: 'Segoe UI', 'Arial', sans-serif;
     padding: 40px 20px; /* Увеличены отступы */
     overflow-y: auto; /* Добавлен скролл */
+    box-sizing: border-box; /* Чтобы padding не увеличивал высоту */
   }
 
   .no-trainings-content {

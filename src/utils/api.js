@@ -47,52 +47,34 @@ function isNowBetween(startDateStr, endDateStr) {
 /**
  * Проверяет, находится ли тренировка в будущем
  */
-function isFutureTraining(startDateStr) {
-  try {
-    const now = new Date();
-    const start = new Date(startDateStr);
-    // Считаем тренировку будущей, если она начнется через минуту или позже
-    return start > new Date(now.getTime() + 60000);
-  } catch (error) {
-    console.error('Ошибка в isFutureTraining:', error);
-    return false;
-  }
-}
-
-/**
- * Фильтрует тренировки по времени и возвращает актуальные
- */
 function filterTrainingsByTime(trainings) {
   const now = new Date();
   console.log(`⏰ Текущее время: ${now.toLocaleString()}`);
   
-  const currentTrainings = trainings.filter(training => {
-    const isCurrent = isNowBetween(training.StartDate, training.EndDate);
-    if (isCurrent) {
-      console.log(`🏋️ ТЕКУЩАЯ тренировка: "${training.Service?.Title}" с ${training.StartDate} до ${training.EndDate}`);
-    }
-    return isCurrent;
-  });
+  // 1. Текущие тренировки (идёт прямо сейчас)
+  const currentTrainings = trainings.filter(t => isNowBetween(t.StartDate, t.EndDate));
   
   if (currentTrainings.length > 0) {
     console.log(`✅ Найдено ${currentTrainings.length} текущих тренировок`);
     return {
-      current: currentTrainings[0], // Берем первую текущую
+      current: currentTrainings[0],
       next: null,
       allCurrent: currentTrainings
     };
   }
   
-  // Ищем следующую тренировку
+  // 2. Будущие тренировки (начнутся в ближайшие 24 часа)
   const futureTrainings = trainings
-    .filter(t => isFutureTraining(t.StartDate))
+    .filter(t => {
+      const start = new Date(t.StartDate);
+      return start > now && (start - now) < 24 * 60 * 60 * 1000;
+    })
     .sort((a, b) => new Date(a.StartDate) - new Date(b.StartDate));
   
   if (futureTrainings.length > 0) {
     const nextTraining = futureTrainings[0];
     console.log(`⏭️ СЛЕДУЮЩАЯ тренировка: "${nextTraining.Service?.Title}" в ${nextTraining.StartDate}`);
     
-    // Лог всех будущих тренировок
     console.log('📅 Все будущие тренировки:');
     futureTrainings.forEach((t, i) => {
       const timeUntil = Math.round((new Date(t.StartDate) - now) / 60000);
@@ -114,7 +96,6 @@ function filterTrainingsByTime(trainings) {
     allFuture: []
   };
 }
-
 
 
 
@@ -293,9 +274,10 @@ export async function fetchTrainings() {
       mainTraining = timeFiltered.next;
       console.log('👑 Выбрана СЛЕДУЮЩАЯ тренировка (ближайшая в будущем)');
     } else if (gymZoneTrainings.length > 0) {
-      // Если нет актуальных по времени, берем первую вообще
-      mainTraining = gymZoneTrainings.find(item => item.Scheme) || gymZoneTrainings[0];
-      console.log('👑 Выбрана первая доступная тренировка (нет актуальных по времени)');
+      // // Если нет актуальных по времени, берем первую вообще
+      // mainTraining = gymZoneTrainings.find(item => item.Scheme) || gymZoneTrainings[0];
+      // console.log('👑 Выбрана первая доступная тренировка (нет актуальных по времени)');
+      mainTraining = null
     } else {
       mainTraining = null;
       console.log('👑 Нет тренировок для отображения');

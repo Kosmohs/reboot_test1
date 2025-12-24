@@ -5,8 +5,9 @@
 export const DEFAULT_TV_CONFIG = {
   gym_id: 1,
   // room_id: '8b550c93-cf91-11f0-92a9-005056015d0b', // HIT ZONE по умолчанию
-  room_id: '71a5eec2-a066-11f0-9298-005056015d0b', // HIT ZONE по умолчанию
-  televisor_id: 4,
+  room_id: '71a5eec2-a066-11f0-9298-005056015d0b', // GYM ZONE по умолчанию
+  // televisor_id: 4,
+  televisor_id: 1,
   tv_name: 'Не настроен',
   requires_setup: true
 };
