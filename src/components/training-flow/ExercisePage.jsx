@@ -12,11 +12,11 @@ const ExercisePage = () => {
     currentApproach
   } = useTrainingState();
   
-  console.log('💪 ExercisePage рендер:', { 
-    timer, 
-    station: currentStationIndex + 1,
-    approach: currentApproach 
-  });
+  // console.log('💪 ExercisePage рендер:', { 
+  //   timer, 
+  //   station: currentStationIndex + 1,
+  //   approach: currentApproach 
+  // });
   
   // Форматирование времени (MM:SS)
   const formatTime = (seconds) => {

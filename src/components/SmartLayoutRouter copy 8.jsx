@@ -10,8 +10,6 @@ import NoTrainingsDisplay from './NoTrainingsDisplay';
 import CurrentTrainingNoScheme from './CurrentTrainingNoScheme';
 
 import { calculateCurrentTrainingState } from '../utils/training-calculator';
-import LoadingScreen from './training-flow/LoadingScreen';
-
 
 // ТЕСТОВЫЕ ДАННЫЕ ДЛЯ РАЗНЫХ LAYOUT
 const TEST_PROGRAMS = {
@@ -24,7 +22,7 @@ const TEST_PROGRAMS = {
       name: 'HIT ZONE (Тест 3 программы)',
     //   time: '16:00',
     //   time: new Date(Date.now()).toISOString(), // Сейчас
-      time: new Date(Date.now() - 0.40 * 60000).toISOString(), // 5 минут назад
+      time: new Date(Date.now() - 1 * 60000).toISOString(), // 5 минут назад
     //   time: new Date(Date.now() + 15 * 60000).toISOString(), // Через 15 минут
       endTime: new Date(Date.now() + 55 * 60000).toISOString(), // Через 55 минут
       trainer: 'Тренер Тест',
@@ -509,12 +507,91 @@ function SmartLayoutRouter() {
 
   // Если загрузка
   if (loading) {
-    return <LoadingScreen tvConfig={tvConfig} />;
+    return (
+      <div className="smart-router-loading">
+        <div className="loading-content">
+          <div className="loading-text">Определение макета HIT ZONE...</div>
+          <div className="loading-details">
+            {TEST_MODE ? `Тестовый режим: ${TEST_LAYOUT}` : 'Режим работы с API'}
+          </div>
+          <div className="loading-config">
+            Телевизор: {tvConfig?.televisor_id || '...'} | Зал: HIT ZONE
+          </div>
+          <div className="loading-spinner"></div>
+        </div>
+        
+        <style>{`
+          .smart-router-loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-family: Arial, sans-serif;
+          }
+          .loading-content {
+            text-align: center;
+            max-width: 500px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+          }
+          .loading-text {
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: bold;
+          }
+          .loading-details {
+            font-size: 16px;
+            margin-bottom: 10px;
+            opacity: 0.9;
+          }
+          .loading-config {
+            font-size: 14px;
+            margin-bottom: 30px;
+            opacity: 0.7;
+          }
+          .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            margin: 0 auto;
+            animation: spin 1s ease-in-out infinite;
+          }
+          @keyframes spin {
+            to { transform: rotate(360deg); }
+          }
+        `}</style>
+      </div>
+    );
   }
 
   // Если ошибка
   if (error) {
-    return <LoadingScreen error={error} onRetry={() => window.location.reload()} />;
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        fontSize: '20px',
+        color: 'red',
+        flexDirection: 'column',
+        gap: '10px'
+      }}>
+        <div>{error}</div>
+        <button 
+          onClick={() => window.location.reload()}
+          style={{ padding: '10px 20px', marginTop: '20px' }}
+        >
+          Перезагрузить
+        </button>
+      </div>
+    );
   }
 
   if (trainingData?.status === 'no_trainings') {
@@ -571,7 +648,7 @@ function SmartLayoutRouter() {
                     return <CurrentTrainingNoScheme trainingData={trainingData} />;
                 }
             }
-
+            
         // case 'current':
         //     // Текущая тренировка
         //     if (trainingData.Scheme?.length > 0) {

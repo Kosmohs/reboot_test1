@@ -155,7 +155,8 @@ export async function fetchTrainings() {
     // 7. ЛОГ ВСЕХ ДАННЫХ (если есть)
     if (response.data?.data && Array.isArray(response.data.data)) {
       console.log('📋 ВСЕ ДАННЫЕ ОТ API (первые 5 элементов):');
-      response.data.data.slice(0, 5).forEach((item, index) => {
+      // response.data.data.slice(0, 5).forEach((item, index) => {
+      response.data.data.forEach((item, index) => {
         console.log(`  [${index}]`, {
           AppointmentID: item.AppointmentID?.substring(0, 20) + '...',
           Service: item.Service?.Title,
@@ -175,8 +176,8 @@ export async function fetchTrainings() {
       console.log('response.data:', response.data);
     }
     
-    // 8. ФИЛЬТРАЦИЯ HIT ZONE
-    console.log('🎯 ФИЛЬТРУЮ ДАННЫЕ ДЛЯ HIT ZONE...');
+    // 8. ФИЛЬТРАЦИЯ GYM ZONE
+    console.log('🎯 ФИЛЬТРУЮ ДАННЫЕ ДЛЯ GYM ZONE...');
     const allData = response.data?.data || [];
     console.log(`- Всего элементов в ответе: ${allData.length}`);
     
@@ -206,6 +207,17 @@ export async function fetchTrainings() {
       
       // return isHitZone;
       return false;
+    });
+
+    // Добавь в api.js после фильтрации:
+    console.log('🔍 ДЕТАЛЬНО О ТРЕНИРОВКАХ:');
+    gymZoneTrainings.forEach((t, i) => {
+      console.log(`${i}. ${t.Service?.Title}`, {
+        время: t.StartDate,
+        статус: isNowBetween(t.StartDate, t.EndDate) ? 'ТЕКУЩАЯ' : 'НЕ ТЕКУЩАЯ',
+        схема: t.Scheme?.length || 0,
+        clients: t.Clients?.length || 0
+      });
     });
     
     // console.log(`🎯 РЕЗУЛЬТАТ ФИЛЬТРАЦИИ: ${hitZoneTrainings.length} тренировок в HIT ZONE`);
@@ -247,8 +259,8 @@ export async function fetchTrainings() {
       };
     }
     
-    // 9. ЛОГ НАЙДЕННЫХ HIT ZONE ТРЕНИРОВОК
-    console.log('🏋️ ВСЕ HIT ZONE ТРЕНИРОВКИ НА СЕГОДНЯ:');
+    // 9. ЛОГ НАЙДЕННЫХ GYM ZONE ТРЕНИРОВОК
+    console.log('🏋️ ВСЕ GYM ZONE ТРЕНИРОВКИ НА СЕГОДНЯ:');
     gymZoneTrainings.forEach((training, index) => {
       const isCurrent = timeFiltered.current?.AppointmentID === training.AppointmentID;
       const isNext = timeFiltered.next?.AppointmentID === training.AppointmentID;
@@ -259,7 +271,8 @@ export async function fetchTrainings() {
         time: training.StartDate,
         duration: `${training.Duration} мин`,
         hasScheme: !!training.Scheme,
-        capacity: `${training.Clients?.length || 0}/${training.Capacity}`
+        // capacity: `${training.Clients?.length || 0}/${training.Capacity}`
+        capacity: `${training.Capacity - training.AvailableSlots}/${training.Capacity}`
       });
     });
     

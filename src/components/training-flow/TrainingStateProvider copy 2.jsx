@@ -1,6 +1,5 @@
 // src/components/training-flow/TrainingStateProvider.jsx
 import { createContext, useState, useContext, useMemo, useEffect, useCallback } from 'react';
-import { calculateCurrentTrainingState } from '../../utils/training-calculator'; // Импортируем калькулятор
 
 // Создаём контекст
 export const TrainingStateContext = createContext();
@@ -14,56 +13,24 @@ export const useTrainingState = () => {
   return context;
 };
 
-export const TrainingStateProvider = ({ children, hitZoneData, initialCalculatedState = null }) => {
-  // console.log('🎯 TrainingStateProvider инициализация:', {
-  //   hasHitZoneData: !!hitZoneData,
-  //   success: hitZoneData?.success,
-  //   status: hitZoneData?.status,
-  //   hasScheme: hitZoneData?.Scheme?.length > 0,
-  //   schemeLength: hitZoneData?.Scheme?.length,
-  //   layout: hitZoneData?.layout,
-  //   programCount: hitZoneData?.programCount,
-  //   clientCount: hitZoneData?.clientCount,
-  //   initialCalculatedState: !!initialCalculatedState
-  // });
+export const TrainingStateProvider = ({ children, hitZoneData }) => {
+  console.log('🎯 TrainingStateProvider инициализация:', {
+    hasHitZoneData: !!hitZoneData,
+    success: hitZoneData?.success,
+    hasScheme: hitZoneData?.Scheme?.length > 0,
+    schemeLength: hitZoneData?.Scheme?.length,
+    layout: hitZoneData?.layout, // Добавили layout в логи
+    programCount: hitZoneData?.programCount,
+    clientCount: hitZoneData?.clientCount
+  });
 
-  // --- КАЛЬКУЛИРУЕМ НАЧАЛЬНОЕ СОСТОЯНИЕ ---
-  const calculatedState = useMemo(() => {
-    if (initialCalculatedState) {
-      console.log('🎯 Используем переданное начальное состояние:', initialCalculatedState);
-      return initialCalculatedState;
-    }
-    
-    // Рассчитываем состояние на основе текущего времени
-    if (hitZoneData?.status === 'current' && hitZoneData.trainingInfo) {
-      const state = calculateCurrentTrainingState(hitZoneData);
-      console.log('🔄 Рассчитанное начальное состояние:', state);
-      return state;
-    }
-    
-    // Для других статусов (next, available) - начинаем с начала
-    console.log('⏭️ Статус не current, начинаем с начала');
-    return null;
-  }, [hitZoneData, initialCalculatedState]);
-
-  // --- БАЗОВЫЕ СОСТОЯНИЯ (ИНИЦИАЛИЗИРУЕМСЯ ИЗ РАСЧЁТА) ---
+  // --- БАЗОВЫЕ СОСТОЯНИЯ ---
   
   // Текущий этап: 1=разминка, 2=начало, 3=выполнение, 4=отдых, 5=переход, 6=окончание
-  const [currentStep, setCurrentStep] = useState(() => {
-    if (calculatedState?.phase === 'warmup') return 1;
-    if (calculatedState?.phase === 'exercise') return 3;
-    if (calculatedState?.phase === 'rest') return 4;
-    if (calculatedState?.phase === 'transition') return 5;
-    if (calculatedState?.phase === 'finished') return 6;
-    return 2; // Начало по умолчанию
-  });
+  const [currentStep, setCurrentStep] = useState(1);
   
   // Текущий индекс станции (0-7, всего 8 станций)
-  const [currentStationIndex, setCurrentStationIndex] = useState(() => {
-    // Если тренировка уже идет, начинаем с соответствующей станции
-    // Для простоты: каждая станция = 1 подход? Уточни логику!
-    return calculatedState?.round ? Math.min(calculatedState.round - 1, 7) : 0;
-  });
+  const [currentStationIndex, setCurrentStationIndex] = useState(0);
   
   // Текущий подход (1-4)
   const [currentApproach, setCurrentApproach] = useState(1);
@@ -71,56 +38,14 @@ export const TrainingStateProvider = ({ children, hitZoneData, initialCalculated
   // Статус таймера (идет/остановлен)
   const [isRunning, setIsRunning] = useState(true);
   
-  // Текущее время таймера (инициализируем из рассчитанного времени)
-  const [timer, setTimer] = useState(() => {
-    if (calculatedState?.timeLeft && calculatedState.timeLeft > 0) {
-      console.log(`⏱️ Начальный таймер: ${calculatedState.timeLeft} сек`);
-      return calculatedState.timeLeft;
-    }
-    return 0;
-  });
-
-  // Флаг "тренировка уже идет"
-  const [trainingInProgress, setTrainingInProgress] = useState(() => {
-    return !!calculatedState && calculatedState.status === 'current';
-  });
-
-  // console.log('📊 ИНИЦИАЛИЗИРОВАНЫ СОСТОЯНИЯ:', {
-  //   currentStep,
-  //   currentStationIndex,
-  //   currentApproach,
-  //   timer,
-  //   trainingInProgress,
-  //   calculatedState
-  // });
-
-  // === ДОБАВЬ ЭТОТ БЛОК ===
-  // Проверка корректности инициализации
-  useEffect(() => {
-    console.log('✅ TrainingStateProvider ГОТОВ:', {
-      шаг: currentStep,
-      станция: currentStationIndex + 1,
-      подход: currentApproach,
-      таймер: timer,
-      рассчитанноеСостояние: calculatedState,
-      фаза: calculatedState?.phase,
-      раунд: calculatedState?.round,
-      оставшеесяВремя: calculatedState?.timeLeft
-    });
-    
-    if (trainingInProgress) {
-      console.log('⚡ ТРЕНИРОВКА УЖЕ ИДЁТ, начальные значения:');
-      console.log('- Таймер должен начаться с:', calculatedState?.timeLeft, 'сек');
-      console.log('- Фаза:', calculatedState?.phase);
-      console.log('- Раунд:', calculatedState?.round);
-      console.log('- Сообщение:', calculatedState?.message);
-    }
-  }, []);
+  // Текущее время таймера
+  const [timer, setTimer] = useState(0);
   
   // --- ДАННЫЕ ИЗ API ---
   
-  // Scheme данные
+  // Scheme данные (ВАЖНО: должен быть объявлен до функций, которые его используют)
   const scheme = useMemo(() => {
+    // return hitZoneData?.Scheme || [];
     const data = hitZoneData?.Scheme || [];
   
     console.log('🔍 SCHEME ДАННЫЕ ИЗ hitZoneData:', {
@@ -172,36 +97,36 @@ export const TrainingStateProvider = ({ children, hitZoneData, initialCalculated
     return 'page1_1';
   }, [hitZoneData]);
   
-  // console.log('🎯 Определен layout:', currentLayout);
+  console.log('🎯 Определен layout:', currentLayout);
   
   // Конфигурация тренировки
   const trainingConfig = useMemo(() => {
     if (!hitZoneData || !hitZoneData.success) {
       return {
         name: 'Тренировка',
-        warmup_time: 180,
-        exercise_time: 180,
-        rest_time: 60,
-        transition_time: 30,
+        warmup_time: 2,
+        exercise_time: 2,
+        rest_time: 2,
+        transition_time: 2,
         number_of_approaches: 4
       };
     }
     
-    // Берем тайминги из trainingInfo
-    const trainingInfo = hitZoneData.trainingInfo || {};
+    // Основная тренировка из allPrograms
+    const mainTraining = hitZoneData.allPrograms?.[0] || {};
     
     return {
-      name: trainingInfo.name || 'Тренировка',
-      warmup_time: trainingInfo.warmup_time || 180,
-      exercise_time: trainingInfo.exercise_time || 180,
-      rest_time: trainingInfo.rest_time || 60,
-      transition_time: trainingInfo.transition_time || 30,
-      number_of_approaches: 4 // Пока фиксировано
+      name: hitZoneData.trainingInfo?.name || 'Тренировка',
+      warmup_time: mainTraining.training?.warmup_time || 60,
+      exercise_time: mainTraining.training?.exercise_time || 45,
+      rest_time: mainTraining.training?.rest_time || 15,
+      transition_time: mainTraining.training?.transition_time || 30,
+      number_of_approaches: 4 // Пока фиксировано, потом возьмём из данных
     };
   }, [hitZoneData]);
   
-  // console.log('📊 Конфигурация тренировки:', trainingConfig);
-  // console.log('📊 Scheme данных:', scheme.length, 'раундов');
+  console.log('📊 Конфигурация тренировки:', trainingConfig);
+  console.log('📊 Scheme данных:', scheme.length, 'раундов');
   
   // --- ФУНКЦИИ ДЛЯ РАБОТЫ С ДАННЫМИ ---
   
@@ -299,11 +224,11 @@ export const TrainingStateProvider = ({ children, hitZoneData, initialCalculated
   // --- ЛОГИКА ПЕРЕХОДА МЕЖДУ ЭТАПАМИ ---
   
   const goToNextStep = useCallback(() => {
-    // console.log('🔄 Переход к следующему шагу:', {
-    //   currentStep,
-    //   currentStationIndex,
-    //   currentApproach
-    // });
+    console.log('🔄 Переход к следующему шагу:', {
+      currentStep,
+      currentStationIndex,
+      currentApproach
+    });
     
     switch(currentStep) {
       case 1: // Разминка → Начало
@@ -389,7 +314,7 @@ export const TrainingStateProvider = ({ children, hitZoneData, initialCalculated
         timeForStep = 0;
     }
     
-    // console.log(`⏱️ Установка таймера для шага ${currentStep}: ${timeForStep} сек`);
+    console.log(`⏱️ Установка таймера для шага ${currentStep}: ${timeForStep} сек`);
     setTimer(timeForStep);
   }, [currentStep, trainingConfig]);
   
@@ -402,7 +327,7 @@ export const TrainingStateProvider = ({ children, hitZoneData, initialCalculated
         if (prev <= 1) {
           // Время закончилось
           clearInterval(intervalId);
-          setTimeout(() => goToNextStep(), 100);
+          setTimeout(() => goToNextStep(), 100); // Небольшая задержка перед переходом
           return 0;
         }
         return prev - 1;
@@ -421,10 +346,8 @@ export const TrainingStateProvider = ({ children, hitZoneData, initialCalculated
     currentApproach,
     timer,
     isRunning,
-    trainingInProgress,
-    calculatedState,
     
-    // Layout
+    // Layout - ДОБАВЛЯЕМ ЭТО
     currentLayout,
     
     // Конфигурация
@@ -455,17 +378,14 @@ export const TrainingStateProvider = ({ children, hitZoneData, initialCalculated
     // Управление состоянием (для отладки)
     setCurrentStep,
     setCurrentStationIndex,
-    setCurrentApproach,
-    setTimer
+    setCurrentApproach
   }), [
     currentStep,
     currentStationIndex,
     currentApproach,
     timer,
     isRunning,
-    trainingInProgress,
-    calculatedState,
-    currentLayout,
+    currentLayout, // ДОБАВЛЯЕМ ЭТО
     trainingConfig,
     scheme,
     getAllClients,

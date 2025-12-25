@@ -12,11 +12,11 @@ const RestPage = () => {
     currentApproach
   } = useTrainingState();
   
-  console.log('🌿 RestPage рендер:', { 
-    timer, 
-    station: currentStationIndex + 1,
-    approach: currentApproach 
-  });
+  // console.log('🌿 RestPage рендер:', { 
+  //   timer, 
+  //   station: currentStationIndex + 1,
+  //   approach: currentApproach 
+  // });
   
   // Форматирование времени (MM:SS)
   const formatTime = (seconds) => {

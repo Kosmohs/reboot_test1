@@ -21,12 +21,12 @@ const TVSetupPage = () => {
           { id: 6, name: '2 ТV (Big)', number: '2' },
           { id: 7, name: '3 ТV (Big)', number: '3' },
           { id: 8, name: '4 ТV (Big)', number: '4' },
-          { id: 9, name: '5 ТV', number: '5' },
-          { id: 10, name: '6 ТV', number: '6' },
-          { id: 11, name: '7 TV', number: '7' },
-          { id: 12, name: '8 ТV', number: '8' },
-          { id: 13, name: '9 ТV', number: '9' },
-          { id: 14, name: '10 ТV', number: '10' }
+          // { id: 9, name: '5 ТV', number: '5' },
+          // { id: 10, name: '6 ТV', number: '6' },
+          // { id: 11, name: '7 TV', number: '7' },
+          // { id: 12, name: '8 ТV', number: '8' },
+          // { id: 13, name: '9 ТV', number: '9' },
+          // { id: 14, name: '10 ТV', number: '10' }
         ]
       },
       {

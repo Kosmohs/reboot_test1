@@ -40,33 +40,6 @@ function CurrentTrainingNoScheme({ trainingData }) {
     }
   };
 
-  // Определяем зону (room) из данных
-    const getZoneName = () => {
-        const room = trainingData.trainingInfo?.room;
-        if (!room || room === '—') return '—';
-        
-        // Если room содержит "GYM" или "ЗАЛ", показываем GYM ZONE
-        if (room.includes('GYM') || room.includes('ЗАЛ')) {
-            return 'GYM ZONE';
-        }
-        // Если HIT ZONE
-        if (room.includes('HIT')) {
-            return 'HIT ZONE';
-        }
-        // Иначе возвращаем как есть или HIT ZONE по умолчанию
-        return 'HIT ZONE';
-    };
-
-    // Определяем текст о тренере
-    const getCoachMessage = () => {
-        const trainer = trainingData.trainingInfo?.trainer;
-        // Если тренер пустой, равен "—" или "Тренер" (без реального имени)
-        if (!trainer || trainer.trim() === '' || trainer === '—' || trainer === 'Тренер') {
-            return 'Тренировка проходит в формате свободного занятия';
-        }
-        return 'Тренировка проходит под руководством тренера';
-    };
-
   return (
     <div style={styles.container}>
       {/* Шапка с лого и временем */}
@@ -101,16 +74,9 @@ function CurrentTrainingNoScheme({ trainingData }) {
         </div>
 
         <div style={styles.infoSection}>
-          {/* <div style={styles.infoCard}>
+          <div style={styles.infoCard}>
             <div style={styles.infoLabel}>ТРЕНЕР</div>
             <div style={styles.infoValue}>{trainingData.trainingInfo?.trainer || '—'}</div>
-          </div> */}
-          <div style={styles.infoValue}>
-            {trainingData.trainingInfo?.trainer === 'Тренер' || 
-            !trainingData.trainingInfo?.trainer || 
-            trainingData.trainingInfo?.trainer === '—' 
-                ? '—' 
-                : trainingData.trainingInfo?.trainer}
           </div>
           
           {trainingData.clientCount > 0 && (
@@ -127,8 +93,7 @@ function CurrentTrainingNoScheme({ trainingData }) {
           <div style={styles.messageContent}>
             <div style={styles.messageTitle}>Схема не настроена</div>
             <div style={styles.messageText}>
-              {/* Тренировка проходит под руководством тренера */}
-              {getCoachMessage()}
+              Тренировка проходит под руководством тренера
             </div>
           </div>
         </div>
@@ -136,8 +101,7 @@ function CurrentTrainingNoScheme({ trainingData }) {
 
       {/* Футер */}
       <div style={styles.footer}>
-        {/* <div style={styles.zoneBadge}>HIT ZONE</div> */}
-        <div style={styles.zoneBadge}>{getZoneName()}</div>
+        <div style={styles.zoneBadge}>HIT ZONE</div>
         <div style={styles.footerHint}>
           Система автоматически обновится при появлении данных
         </div>

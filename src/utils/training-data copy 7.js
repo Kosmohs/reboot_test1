@@ -200,15 +200,7 @@ export function parseHitZoneData(apiResponse) {
     endTime: mainTraining.EndDate,
     trainer: mainTraining.Employee?.FullName || 'Тренер',
     round: 1,
-    // totalRounds: Scheme.length || 16,
-    totalRounds: mainTraining.training?.round || 16,
-
-    // ВАЖНО: Берем тайминги из training объекта
-    warmup_time: mainTraining.training?.warmup_time || 2, // секунды
-    exercise_time: mainTraining.training?.exercise_time || 2, // секунды
-    rest_time: mainTraining.training?.rest_time || 2, // секунды
-    transition_time: mainTraining.training?.transition_time || 2, // секунды
-
+    totalRounds: Scheme.length || 16,
     currentApproach: 1,
     // НОВОЕ: Добавляем тайминги тренировки
     training: mainTraining.training || null,
